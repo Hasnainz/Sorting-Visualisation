@@ -1,0 +1,12 @@
+.array-container{
+    width: 95%;
+    padding: 10px;
+}
+.array-bar{
+    margin: 0 1px;
+    display: inline-block;
+}
+
+.size-slider{
+    width: 50%
+}
