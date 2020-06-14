@@ -1,8 +1,13 @@
 .array-container{
     width: 95%;
     padding: 10px;
+    display: inline-block;
 }
 .array-bar{
+    margin: 0 1px;
+    display: inline-block;
+}
+.not-array-bar{
     margin: 0 1px;
     display: inline-block;
 }
