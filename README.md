@@ -1,3 +1,9 @@
+## If you want to try this website.
+
+[http://nnugget.github.io/Sorting-Visualisation](http://nnugget.github.io/Sorting-Visualisation)
+
+## As of 2020/06/15: Only Bubble, Merge and Quick have been completed and error checking has not been finished as well.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
