@@ -5,14 +5,7 @@ import getHeapSortAnimations from './Algorithms/heapsort';
 import getQuickSortAnimations from './Algorithms/quicksort';
 import getMergeSortAnimations from './Algorithms/mergesort';
 import getInsertionSortAnimations from './Algorithms/insertionsort';
-//colours to use 
-//#2b303a Gunmetal
-//#dea478 Peach
-//#f0c256 Yellow
-//#d89598 Pink
-//#70b8c7 light blue
-//#9c9fb6 lilac
-//#383683 purple
+
 const primaryColour = "#70b8c7"; //Air Superiority blue
 const selectedColour = "#383683"; //Purple
 const successColour = "#97DB4F"; //Inchworm green
@@ -121,6 +114,34 @@ export default class Sort extends React.Component{
   }
 
   async QuickSort(){
+    let animations = getQuickSortAnimations(this.state.array);
+    const length = animations.length;
+    let arrayBars = document.getElementsByClassName("array-bar");
+    console.log(animations);
+    for(let i = 0; i < length; i++){
+      if(animations[i].length === 4){
+        let [barOneIndex, barTwoIndex, barOneHeight, barTwoHeight] = animations[i];   
+        arrayBars[barOneIndex].style.height = `${barTwoHeight}px`;
+        arrayBars[barTwoIndex].style.height = `${barOneHeight}px`;
+        arrayBars[barOneIndex].style.backgroundColor = successColour;
+        arrayBars[barTwoIndex].style.backgroundColor = successColour;
+        await wait(animationSpeed);
+        arrayBars[barOneIndex].style.backgroundColor = primaryColour;
+        arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
+      }
+      else{
+        let [barOneIndex, barTwoIndex] = animations[i];
+        arrayBars[barOneIndex].style.backgroundColor = selectedColour;
+        arrayBars[barTwoIndex].style.backgroundColor = selectedColour;
+        await wait(animationSpeed);
+        arrayBars[barOneIndex].style.backgroundColor = primaryColour;
+        arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
+
+      }
+  
+    }
+    this.AnimationFinished();
+
   }
   async InsertionSort(){
   }
