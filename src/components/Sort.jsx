@@ -12,7 +12,6 @@ const successColour = "#97DB4F"; //Inchworm green
 const failedColour = "#D64933"; //Cinnabar
 const backgroundColour = "FFFFFF";
 let barColour = primaryColour;
-
 let size, pixelwidth, width, height, animationSpeed;
 
 export default class Sort extends React.Component{
@@ -54,7 +53,7 @@ export default class Sort extends React.Component{
   //an array of the order in which the elements were sorted giving an animation array.
   //This allows for features such as pausing and playing to be added with more ease.
   async BubbleSort(){
-    let animations = getBubbleSortAnimations(this.state.array);
+    let animations = getBubbleSortAnimations(this.state.array.slice());
     const size = animations.length;
     let arrayBars = document.getElementsByClassName("array-bar");
     for(let i=0;i<size;i++){
@@ -88,7 +87,7 @@ export default class Sort extends React.Component{
   }
 
   async MergeSort(){
-    let animations = getMergeSortAnimations(this.state.array);
+    let animations = getMergeSortAnimations(this.state.array.slice());
     let arrayBars = document.getElementsByClassName("array-bar");
     const length = animations.length;
     for(let i = 0; i < length; i++){
@@ -107,14 +106,31 @@ export default class Sort extends React.Component{
       barTwoStyle.backgroundColor = primaryColour;
       
     }
-    this.AnimationFinished();
+    await this.AnimationFinished();
   }
 
   async HeapSort(){
+    let animations = getHeapSortAnimations(this.state.array.slice());
+    const length = animations.length;
+    let arrayBars = document.getElementsByClassName("array-bar");
+    for(let i = 0; i < length; i++){
+      let [barOneIndex, barTwoIndex, barOneHeight, barTwoHeight] = animations[i];   
+      arrayBars[barOneIndex].style.backgroundColor = selectedColour;
+      arrayBars[barTwoIndex].style.backgroundColor = selectedColour;
+      await wait(animationSpeed);
+      arrayBars[barOneIndex].style.height = `${barTwoHeight}px`;
+      arrayBars[barTwoIndex].style.height = `${barOneHeight}px`;
+      arrayBars[barOneIndex].style.backgroundColor = successColour;
+      arrayBars[barTwoIndex].style.backgroundColor = successColour;
+      await wait(animationSpeed);
+      arrayBars[barOneIndex].style.backgroundColor = primaryColour;
+      arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
+    }
+    await this.AnimationFinished();
   }
 
   async QuickSort(){
-    let animations = getQuickSortAnimations(this.state.array);
+    let animations = getQuickSortAnimations(this.state.array.slice());
     const length = animations.length;
     let arrayBars = document.getElementsByClassName("array-bar");
     console.log(animations);
@@ -129,19 +145,24 @@ export default class Sort extends React.Component{
         arrayBars[barOneIndex].style.backgroundColor = primaryColour;
         arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
       }
+      else if(animations[i].length === 2){
+        if(i !== 0){
+          let [previousPivot, notpivot] = animations[i-1];
+          arrayBars[previousPivot].style.backgroundColor = primaryColour;
+        }
+        let [pivotIndex, pivot] = animations[i];
+        arrayBars[pivotIndex].style.backgroundColor = selectedColour;
+        await wait(animationSpeed);
+      }
       else{
-        let [barOneIndex, barTwoIndex] = animations[i];
+        let [barOneIndex] = animations[i];
         arrayBars[barOneIndex].style.backgroundColor = selectedColour;
-        arrayBars[barTwoIndex].style.backgroundColor = selectedColour;
         await wait(animationSpeed);
         arrayBars[barOneIndex].style.backgroundColor = primaryColour;
-        arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
-
       }
   
     }
-    this.AnimationFinished();
-
+    await this.AnimationFinished();
   }
   async InsertionSort(){
   }
