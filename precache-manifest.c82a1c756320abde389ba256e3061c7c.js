@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "0f4d3a92c2bf6ecdf6b077f9a5ee8ffe",
+    "revision": "6e1f0db9df39e95b3659191f5558b189",
     "url": "/Sorting-Visualisation/index.html"
   },
   {
-    "revision": "e7edcdef4ea67215ce8f",
-    "url": "/Sorting-Visualisation/static/css/main.9766035c.chunk.css"
+    "revision": "93b561223ce78dc8d0af",
+    "url": "/Sorting-Visualisation/static/css/main.03fecdbf.chunk.css"
   },
   {
     "revision": "0a330d2939d570b354b5",
@@ -16,15 +16,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Sorting-Visualisation/static/js/2.fbbd2c04.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "e7edcdef4ea67215ce8f",
-    "url": "/Sorting-Visualisation/static/js/main.cb483322.chunk.js"
+    "revision": "93b561223ce78dc8d0af",
+    "url": "/Sorting-Visualisation/static/js/main.664a13c0.chunk.js"
   },
   {
     "revision": "da7d53fac488ae77a44b",
     "url": "/Sorting-Visualisation/static/js/runtime-main.b700621d.js"
   },
   {
-    "revision": "5d5d9eefa31e5e13a6610d9fa7a283bb",
-    "url": "/Sorting-Visualisation/static/media/logo.5d5d9eef.svg"
+    "revision": "ee7cd8ed2dcec943251eb2763684fc6f",
+    "url": "/Sorting-Visualisation/static/media/logo.ee7cd8ed.svg"
   }
 ]);
