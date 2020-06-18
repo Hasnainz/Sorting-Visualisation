@@ -33,7 +33,7 @@ function maxHeap(array, i) {
         max = right
     }
 
-    if (max != i) {
+    if (max !== i) {
         animations.push([i, max, array[i], array[max]]);
         swap(array, i, max)
         maxHeap(array, max)
