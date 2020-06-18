@@ -3,7 +3,6 @@ let animations;
 export default function getQuickSortAnimations(array){
     animations = [];
     QuickSort(array, 0, array.length-1)
-    console.log(array);
     return animations;
 }
     

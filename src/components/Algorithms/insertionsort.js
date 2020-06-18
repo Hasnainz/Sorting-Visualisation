@@ -2,7 +2,6 @@ let animations;
 export default function getInsertionSortAnimations(array){
     animations = [];
     insertionSort(array);
-    console.log(array);
     return animations;
 }
     

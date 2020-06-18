@@ -10,6 +10,7 @@ const primaryColour = "#70b8c7"; //Air Superiority blue
 const selectedColour = "#383683"; //Purple
 const successColour = "#97DB4F"; //Inchworm green
 const failedColour = "#D64933"; //Cinnabar
+const pivotColour = "#383683"; //Deep Jungle Green
 const backgroundColour = "FFFFFF";
 let isRunning = false;
 let barColour = primaryColour;
@@ -68,7 +69,7 @@ export default class Sort extends React.Component{
     await wait(1000);
     barColour = primaryColour;
     this.forceUpdate();
-
+    this.StopRunning();
   }
   //Instead of returning a sorted array, these algorithms sort the array but return
   //an array of the order in which the elements were sorted giving an animation array.
@@ -191,12 +192,12 @@ export default class Sort extends React.Component{
             arrayBars[previousPivot].style.backgroundColor = primaryColour;
           }
           let [pivotIndex, pivot] = animations[i];
-          arrayBars[pivotIndex].style.backgroundColor = selectedColour;
+          arrayBars[pivotIndex].style.backgroundColor = pivotColour;
+          tempPivotIndex = pivotIndex;
           await wait(animationSpeed);
         }
         else{
           let [barOneIndex] = animations[i];
-          tempPivotIndex = barOneIndex;
           arrayBars[barOneIndex].style.backgroundColor = selectedColour;
           await wait(animationSpeed);
           arrayBars[barOneIndex].style.backgroundColor = primaryColour;
@@ -297,17 +298,17 @@ export default class Sort extends React.Component{
         <div className="footer-container">
           <div>
               <button className="disabledbutton" onClick={() => this.resetArray()}>Generate New Array</button>
-              <button onClick={() => this.StopRunning()}>Stop</button>
               <button className="disabledbutton" onClick={() => this.MergeSort()}>Merge Sort</button>
               <button className="disabledbutton" onClick={() => this.BubbleSort()}>Bubble Sort</button>
               <button className="disabledbutton" onClick={() => this.HeapSort()}>Heap Sort</button>
               <button className="disabledbutton" onClick={() => this.QuickSort()}>Quick Sort</button>
               <button className="disabledbutton" onClick={() => this.InsertionSort()}>Insertion Sort</button>
+              <button className="stopbutton" onClick={() => this.StopRunning()}>Stop</button>
           </div>
           <div>
-            <label>Size &nbsp;</label>
+            <label class="text">Size &nbsp;</label>
             <input 
-            class="size-slider"
+            class="slider"
             id = "size-slider"
             type="range" 
             min="4"
@@ -317,9 +318,9 @@ export default class Sort extends React.Component{
             </input>
           </div>
           <div>
-            <label>Speed</label>
+            <label class="text">Speed</label>
             <input 
-            class="size-slider"
+            class="slider"
             type="range" 
             min="1"
             max="1000"
