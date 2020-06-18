@@ -3,9 +3,6 @@ export default function getHeapSortAnimations(array){
     animations = []
     size = array.length;
     HeapSort(array);
-    console.log(animations);
-    console.log(array);
-    console.log(size);
     return animations;
 }
 function HeapSort(array){

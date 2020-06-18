@@ -3,7 +3,6 @@ export default function getMergeSortAnimations(array){
     const animations = []
     if (array.length <= 1) return array;
     MergeSort(array, auxiliaryArray, 0, array.length - 1, animations);
-    console.log(animations);
     return animations;
 }
 function MergeSort(array, auxillaryArray, start, end, animations){
@@ -17,7 +16,6 @@ function Merge(array, auxillaryArray, start, end, middle, animations){
     let left = start;
     let right = middle + 1;
     let index = start;
-    console.log(array.length);
     while(left <= middle && right <= end){
         if(auxillaryArray[left] < auxillaryArray[right]){
             animations.push([left, index, auxillaryArray[left]])
