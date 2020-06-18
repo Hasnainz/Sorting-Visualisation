@@ -48,6 +48,8 @@ export default class Sort extends React.Component{
     for(let button of buttons){
       button.disabled = true;
     }
+    let slider = document.getElementById("size-slider");
+    slider.disabled = true;
   }
   StopRunning(){
     isRunning = false;
@@ -57,6 +59,8 @@ export default class Sort extends React.Component{
     for(let button of buttons){
       button.disabled = false;
     }
+    let slider = document.getElementById("size-slider");
+    slider.disabled = false;
   }
   async AnimationFinished(){
     barColour = successColour;
@@ -277,7 +281,7 @@ export default class Sort extends React.Component{
               style={{
               backgroundColor: backgroundColour,
               height: `${height}px`,
-              width: `${20}px`,
+              width: `${1}px`,
               }}
           ></div>
           {array.map((value, index) => (
@@ -304,6 +308,7 @@ export default class Sort extends React.Component{
             <label>Size &nbsp;</label>
             <input 
             class="size-slider"
+            id = "size-slider"
             type="range" 
             min="4"
             max="275"
