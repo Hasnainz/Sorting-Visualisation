@@ -74,13 +74,13 @@ export default class Sort extends React.Component{
   //Instead of returning a sorted array, these algorithms sort the array but return
   //an array of the order in which the elements were sorted giving an animation array.
   async BubbleSort(){
-    let animations = getBubbleSortAnimations(this.state.array);
-    const size = animations.length;
+    let animations = getBubbleSortAnimations(this.state.array.slice());
+    const length = animations.length;
     let arrayBars = document.getElementsByClassName("array-bar");
     this.StartSorting();
-    for(let i=0;i<size;i++){
+    for(let i=0;i<length;i++){
       if(isRunning){
-        let [barOneIndex, barTwoIndex] = animations[i]
+        let [barOneIndex, barTwoIndex, barOneHeight, barTwoHeight] = animations[i]
 
         let barOneStyle = arrayBars[barOneIndex].style;
         let barTwoStyle = arrayBars[barTwoIndex].style;
@@ -89,16 +89,12 @@ export default class Sort extends React.Component{
         barTwoStyle.backgroundColor = selectedColour;
         await wait(animationSpeed);
   
-        if(parseInt(arrayBars[barOneIndex].style.height) > parseInt(arrayBars[barTwoIndex].style.height)){
-  
-          let temp = arrayBars[barTwoIndex].style.height;
-          arrayBars[barTwoIndex].style.height = arrayBars[barOneIndex].style.height;
-          this.state.array[barTwoIndex] = arrayBars[barOneIndex].style.height;
-          arrayBars[barOneIndex].style.height = temp;
-          this.state.array[barOneIndex] = temp;
+        if(parseInt(barOneHeight) > parseInt(barTwoHeight)){
+          barOneStyle.height = `${barTwoHeight}px`;
+          this.state.array[barOneIndex] = barTwoHeight;
 
-          barOneStyle.backgroundColor = successColour;
-          barTwoStyle.backgroundColor = successColour;
+          barTwoStyle.height = `${barOneHeight}px`;
+          this.state.array[barTwoIndex] = barOneHeight;
           await wait(animationSpeed);
         }else{
           barOneStyle.backgroundColor = failedColour;
@@ -112,7 +108,7 @@ export default class Sort extends React.Component{
         return;
       }
     }
-    this.AnimationFinished();
+    await this.AnimationFinished();
   }
 
   async MergeSort(){
@@ -131,7 +127,7 @@ export default class Sort extends React.Component{
         barOneStyle.backgroundColor = selectedColour;
         barTwoStyle.backgroundColor = selectedColour;
         await wait(animationSpeed);
-        arrayBars[barTwoIndex].style.height = `${barHeight}px`;
+        barTwoStyle.height = `${barHeight}px`;
         this.state.array[barTwoIndex] = barHeight;
         await wait(animationSpeed);
         barOneStyle.backgroundColor = primaryColour;
