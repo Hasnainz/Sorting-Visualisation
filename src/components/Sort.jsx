@@ -73,9 +73,8 @@ export default class Sort extends React.Component{
   }
   //Instead of returning a sorted array, these algorithms sort the array but return
   //an array of the order in which the elements were sorted giving an animation array.
-  //This allows for features such as pausing and playing to be added with more ease.
   async BubbleSort(){
-    let animations = getBubbleSortAnimations(this.state.array.slice());
+    let animations = getBubbleSortAnimations(this.state.array);
     const size = animations.length;
     let arrayBars = document.getElementsByClassName("array-bar");
     this.StartSorting();
@@ -94,8 +93,10 @@ export default class Sort extends React.Component{
   
           let temp = arrayBars[barTwoIndex].style.height;
           arrayBars[barTwoIndex].style.height = arrayBars[barOneIndex].style.height;
+          this.state.array[barTwoIndex] = arrayBars[barOneIndex].style.height;
           arrayBars[barOneIndex].style.height = temp;
-  
+          this.state.array[barOneIndex] = temp;
+
           barOneStyle.backgroundColor = successColour;
           barTwoStyle.backgroundColor = successColour;
           await wait(animationSpeed);
@@ -131,6 +132,7 @@ export default class Sort extends React.Component{
         barTwoStyle.backgroundColor = selectedColour;
         await wait(animationSpeed);
         arrayBars[barTwoIndex].style.height = `${barHeight}px`;
+        this.state.array[barTwoIndex] = barHeight;
         await wait(animationSpeed);
         barOneStyle.backgroundColor = primaryColour;
         barTwoStyle.backgroundColor = primaryColour;
@@ -154,7 +156,11 @@ export default class Sort extends React.Component{
         arrayBars[barTwoIndex].style.backgroundColor = selectedColour;
         await wait(animationSpeed);
         arrayBars[barOneIndex].style.height = `${barTwoHeight}px`;
+        this.state.array[barOneIndex] = barTwoHeight;
+
         arrayBars[barTwoIndex].style.height = `${barOneHeight}px`;
+        this.state.array[barTwoIndex] = barOneHeight;
+
         arrayBars[barOneIndex].style.backgroundColor = successColour;
         arrayBars[barTwoIndex].style.backgroundColor = successColour;
         await wait(animationSpeed);
@@ -179,7 +185,11 @@ export default class Sort extends React.Component{
         if(animations[i].length === 4){
           let [barOneIndex, barTwoIndex, barOneHeight, barTwoHeight] = animations[i];   
           arrayBars[barOneIndex].style.height = `${barTwoHeight}px`;
+          this.state.array[barOneIndex] = barTwoHeight;
+
           arrayBars[barTwoIndex].style.height = `${barOneHeight}px`;
+          this.state.array[barTwoIndex] = barOneHeight;
+
           arrayBars[barOneIndex].style.backgroundColor = successColour;
           arrayBars[barTwoIndex].style.backgroundColor = successColour;
           await wait(animationSpeed);
@@ -221,7 +231,10 @@ export default class Sort extends React.Component{
           let [barOneIndex, barTwoIndex, barOneHeight] = animations[i];
           arrayBars[barOneIndex].style.backgroundColor = selectedColour;
           arrayBars[barTwoIndex].style.backgroundColor = selectedColour;
+          
           arrayBars[barOneIndex+1].style.height = `${barOneHeight}px`;
+          this.state.array[barOneIndex+1] = barOneHeight;
+
           await wait(animationSpeed);
           arrayBars[barOneIndex].style.backgroundColor = primaryColour;
           arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
@@ -229,6 +242,8 @@ export default class Sort extends React.Component{
         else{
           let [barOneIndex, keyHeight, turn] = animations[i];
           arrayBars[barOneIndex].style.height = `${keyHeight}px`;
+          this.state.array[barOneIndex] = keyHeight;
+
           await wait(animationSpeed);
         }
       }
@@ -246,20 +261,6 @@ export default class Sort extends React.Component{
     }
     this.setState({ array });
   }
-  
-  shuffle(array) {
-    //Fisher-Yates Shuffle - most time efficient shuffle algorithm which is important 
-    //for when you are generating this many arrays.
-    let counter = array.length;
-    while (counter > 0) {
-        let index = Math.floor(Math.random() * counter);
-        counter--;
-        let temp = array[counter];
-        array[counter] = array[index];
-        array[index] = temp;
-    }
-    return array;
-}
 
   onSizeSliderChange(event){
     size = event.target.value;
