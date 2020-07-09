@@ -5,6 +5,9 @@ import getHeapSortAnimations from './Algorithms/heapsort';
 import getQuickSortAnimations from './Algorithms/quicksort';
 import getMergeSortAnimations from './Algorithms/mergesort';
 import getInsertionSortAnimations from './Algorithms/insertionsort';
+//This file is the main body of the first page.
+
+
 
 const primaryColour = "#70b8c7"; //Air Superiority blue
 const selectedColour = "#383683"; //Purple
@@ -40,8 +43,8 @@ export default class Sort extends React.Component{
   }
   //This is so that *hopefully* this will work on any sized screen as the compenents will be generated based on screen size
   updateWindowDimensions() {
-    width =  (window.innerWidth*(0.9));
-    height = (window.innerHeight*(0.9));
+    width =  (window.innerWidth*(0.825));
+    height = (window.innerHeight*(0.825));
   }
   StartSorting(){
     isRunning = true;
