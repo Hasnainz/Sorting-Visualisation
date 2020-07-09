@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import Sort from "./components/Sort";
 import Runtimes from "./components/Runtimes";   
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App()
 {
