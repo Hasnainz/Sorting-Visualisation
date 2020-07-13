@@ -1,0 +1,23 @@
+.button {
+    background-color: #D64933; 
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 3px 5px;
+    outline: none;
+    margin: auto;
+}
+.button:hover{
+    background-color: #b93d29; 
+  }
+.button:active{
+    background-color: #9b3424; 
+}
+.total-container{
+    width: 95%;
+    padding-top: 5%;
+    margin: auto;
+    text-align: center;
+}

@@ -11,9 +11,9 @@ function App()
     <div className="App">
       <Navbar></Navbar>
       <Switch>
-          <Route path="/" exact component={Sort} className="align"/>
-          <Route path="/Sorting-Visualisation" component={Sort} className="align"/>
-          <Route path="/Compare-Runtimes" component={Runtimes} className="align"/>
+          <Route path="/" exact component={Sort}/>
+          <Route path="/Sorting-Visualisation" component={Sort}/>
+          <Route path="/Compare-Runtimes" component={Runtimes}/>
       </Switch>
     </div>
     </Router>

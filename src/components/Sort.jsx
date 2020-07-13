@@ -197,10 +197,10 @@ export default class Sort extends React.Component{
         }
         else if(animations[i].length === 2){
           if(i !== 0){
-            let [previousPivot, notpivot] = animations[i-1];
+            let [previousPivot] = animations[i-1];
             arrayBars[previousPivot].style.backgroundColor = primaryColour;
           }
-          let [pivotIndex, pivot] = animations[i];
+          let [pivotIndex] = animations[i];
           arrayBars[pivotIndex].style.backgroundColor = pivotColour;
           tempPivotIndex = pivotIndex;
           await wait(animationSpeed);
@@ -239,7 +239,7 @@ export default class Sort extends React.Component{
           arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
         }
         else{
-          let [barOneIndex, keyHeight, turn] = animations[i];
+          let [barOneIndex, keyHeight] = animations[i];
           arrayBars[barOneIndex].style.height = `${keyHeight}px`;
           this.state.array[barOneIndex] = keyHeight;
 
@@ -306,7 +306,7 @@ export default class Sort extends React.Component{
               <button className="stopbutton" onClick={() => this.StopRunning()}>Stop</button>
           </div>
           <div>
-            <label class="text">Size &nbsp;</label>
+            <label className="text">Size &nbsp;</label>
             <input 
             class="slider"
             id = "size-slider"
@@ -318,7 +318,7 @@ export default class Sort extends React.Component{
             </input>
           </div>
           <div>
-            <label class="text">Speed</label>
+            <label className="text">Speed</label>
             <input 
             class="slider"
             type="range" 
@@ -337,7 +337,7 @@ export default class Sort extends React.Component{
 function wait(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-function getRandomNumber(min, max){
+export function getRandomNumber(min, max){
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
