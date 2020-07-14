@@ -1,4 +1,3 @@
-const express = require('express');
 const router = require('express').Router();
 let runtimeModel = require('../models/runtime.model');
 
@@ -9,13 +8,16 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
+    const sort = req.body.SortType;
+    const runtime =  Number(req.body.RunTime);
+    const sortsize = Number(req.body.ArraySize);
     const post = new runtimeModel({
-        sort: req.body.sort,
-        runtime: req.body.runtime,
-        sortsize: req.body.sortsize
+        sort,
+        runtime,
+        sortsize
     });
     post.save()
-    .then(() => res.json('User added!'))
+    .then(() => res.json('Entry added'))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 

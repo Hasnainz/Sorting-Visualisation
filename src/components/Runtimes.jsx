@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import axios from 'axios';
 import './RuntimeStyles.css';
 import getBubbleSortAnimations from './Algorithms/bubblesort';
 import getHeapSortAnimations from './Algorithms/heapsort';
@@ -6,7 +7,7 @@ import getQuickSortAnimations from './Algorithms/quicksort';
 import getMergeSortAnimations from './Algorithms/mergesort';
 import getInsertionSortAnimations from './Algorithms/insertionsort';
 import {getRandomNumber} from './Sort.jsx';
-
+import { Line as LineChart } from 'react-chartjs-2';
 
 
 export default class Runtimes extends React.Component{
@@ -14,33 +15,98 @@ export default class Runtimes extends React.Component{
     super(properties);
     this.state = {
       disabled : false,
-      RunTimeModels : []
+      RunTimeModels : [],
+      RunTimeModelResponses : [],
+      data : {},
+      options : {}
     }
   }
   CheckTest(){
     console.log(this.state.RunTimeModels);
-  }
+    console.log(this.state.RunTimeModelResponses);
 
-  GetRunTimeData(){
-    
   }
   PushRunTimeData(){
-    
+    let size = this.state.RunTimeModels.length;
+    for(let i = 0; i < size; i++){
+      axios.post('http://localhost:5000/runtime/add', this.state.RunTimeModels[i])
+      .then(res => console.log(res.data));
+    }
+   
   }
-  //On startup, this is what runs.
   componentDidMount(){
-
+    axios.get('http://localhost:5000/runtime/')
+    .then(response => {
+      if (response.data.length > 0) {
+        this.setState({
+          RunTimeModelResponses : response.data
+        }, this.SetGraphData)
+      }
+    })
   }
-  //On closing, this is what runs
-  componentWillUnmount() {
+  SetGraphData(){
+    let BubbleLabels = [];
+    let Bubble = [];
+    let Merge = [];
+    let Quick = [];
+    let Heap = [];
+    let Insertion = [];
 
+    for(let i = 0; i < this.state.RunTimeModelResponses.length; i++){
+        switch(this.state.RunTimeModelResponses[i].sort){
+          case 'bubble':
+            Bubble.push({x: this.state.RunTimeModelResponses[i].sortsize,  y: this.state.RunTimeModelResponses[i].runtime})
+            BubbleLabels.push(this.state.RunTimeModelResponses[i].sortsize);
+            break;
+          case 'merge':
+            Merge.push({x: this.state.RunTimeModelResponses[i].sortsize,  y: this.state.RunTimeModelResponses[i].runtime})
+            break;
+          case 'quick':
+            Quick.push({x: this.state.RunTimeModelResponses[i].sortsize,  y: this.state.RunTimeModelResponses[i].runtime})
+            break;
+          case 'heap':
+            Heap.push({x: this.state.RunTimeModelResponses[i].sortsize,  y: this.state.RunTimeModelResponses[i].runtime})
+            break;
+          case 'insertion':
+            Insertion.push({x: this.state.RunTimeModelResponses[i].sortsize,  y: this.state.RunTimeModelResponses[i].runtime})
+            break;
+          default:
+            break;
+      }
+    }
+    console.log(Bubble);
+    this.setState({
+      data : {
+        labels: BubbleLabels,
+            datasets: [
+              {
+                label: 'Bubble',
+                fill: false,
+                showLine: true, 
+                backgroundColor: 'rgba(75,192,192,0.4)',
+                pointBorderColor: 'rgba(75,192,192,1)',
+                pointBackgroundColor: '#fff',
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                pointHoverBorderColor: 'rgba(220,220,220,1)',
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: Bubble
+              }
+            ]
+      }
+    });
+    
+      
   }
   async GenerateNewTestCases(){
     if(this.state.disabled === true) { return; }
     this.setState({disabled : true});
     let sorttype;
     let RunTimeModelArray = [];
-    for(let size = 5; size <= 5120; size*=2){
+    for(let size = 2500; size <= 2500; size+=1){
       for(let j = 0; j < 5; j++){
         switch(j){
           case 0:
@@ -63,16 +129,13 @@ export default class Runtimes extends React.Component{
         }
         let array = this.resetArray(size);
         let runtime = this.findRuntime(array, sorttype, size);
-        const RunTimeModel = ({RunTime:runtime, SortType:sorttype, ArraySize:size});
+        const RunTimeModel = ({SortType:sorttype, RunTime:runtime,  ArraySize:size});
         RunTimeModelArray.push(RunTimeModel);
       }
     }
-    this.setState((state) => {
-      return{
-        RunTimeModels : state.RunTimeModels.concat(RunTimeModelArray)
-      }
-    })
-    this.PushRunTimeData();
+    this.setState({
+      RunTimeModels : this.state.RunTimeModels.concat(RunTimeModelArray)
+    }, this.PushRunTimeData);
   }
   findRuntime(array, SortType){
     let t0, t1;
@@ -120,12 +183,21 @@ export default class Runtimes extends React.Component{
   {
     return (
       <div className="total-container">
-        <button className="button"
-                onClick={() => this.GenerateNewTestCases()}>
-                Generate new test cases</button>
-        <button className="button"
-                onClick={() => this.CheckTest()}>
-                Check Test</button>
+        <div>
+          <LineChart
+          data={this.state.data}
+          options={this.state.options}
+          width="600" height="250">
+          </LineChart>
+        </div>
+        <div>
+          <button className="button"
+                  onClick={() => this.GenerateNewTestCases()}>
+                  Generate new test cases</button>
+          <button className="button"
+                  onClick={() => this.CheckTest()}>
+                  Check</button>
+        </div>
       </div >
     );
   }
