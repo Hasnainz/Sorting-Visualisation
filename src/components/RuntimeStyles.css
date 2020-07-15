@@ -1,5 +1,5 @@
 .button {
-    background-color: #D64933; 
+    background-color: #4c48c0; 
     border: none;
     color: white;
     text-align: center;
@@ -10,10 +10,10 @@
     margin: auto;
 }
 .button:hover{
-    background-color: #b93d29; 
+    background-color: #383683; 
   }
 .button:active{
-    background-color: #9b3424; 
+    background-color: #22204e; 
 }
 .total-container{
     width: 95%;

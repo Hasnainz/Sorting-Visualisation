@@ -7,8 +7,9 @@ import getQuickSortAnimations from './Algorithms/quicksort';
 import getMergeSortAnimations from './Algorithms/mergesort';
 import getInsertionSortAnimations from './Algorithms/insertionsort';
 import {getRandomNumber} from './Sort.jsx';
-import { Line as LineChart } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 
+let size = 5000;
 
 export default class Runtimes extends React.Component{
   constructor(properties){
@@ -18,21 +19,24 @@ export default class Runtimes extends React.Component{
       RunTimeModels : [],
       RunTimeModelResponses : [],
       data : {},
-      options : {}
+      options : {
+        scales: {
+          yAxes: [{
+            ticks: {
+              min: 0,
+            }
+          }]
+        }
+      }
     }
   }
-  CheckTest(){
-    console.log(this.state.RunTimeModels);
-    console.log(this.state.RunTimeModelResponses);
-
-  }
-  PushRunTimeData(){
+  async PushRunTimeData(){
     let size = this.state.RunTimeModels.length;
     for(let i = 0; i < size; i++){
-      axios.post('http://localhost:5000/runtime/add', this.state.RunTimeModels[i])
+      await axios.post('http://localhost:5000/runtime/add', this.state.RunTimeModels[i])
       .then(res => console.log(res.data));
     }
-   
+    this.componentDidMount();
   }
   componentDidMount(){
     axios.get('http://localhost:5000/runtime/')
@@ -40,73 +44,75 @@ export default class Runtimes extends React.Component{
       if (response.data.length > 0) {
         this.setState({
           RunTimeModelResponses : response.data
-        }, this.SetGraphData)
+        },this.SetGraphData)
       }
     })
   }
   SetGraphData(){
-    let BubbleLabels = [];
+    console.log(size);
     let Bubble = [];
     let Merge = [];
     let Quick = [];
     let Heap = [];
     let Insertion = [];
-
     for(let i = 0; i < this.state.RunTimeModelResponses.length; i++){
         switch(this.state.RunTimeModelResponses[i].sort){
           case 'bubble':
-            Bubble.push({x: this.state.RunTimeModelResponses[i].sortsize,  y: this.state.RunTimeModelResponses[i].runtime})
-            BubbleLabels.push(this.state.RunTimeModelResponses[i].sortsize);
+            if(this.state.RunTimeModelResponses[i].sortsize == size){
+              Bubble.push(this.state.RunTimeModelResponses[i].runtime)
+            }
             break;
           case 'merge':
-            Merge.push({x: this.state.RunTimeModelResponses[i].sortsize,  y: this.state.RunTimeModelResponses[i].runtime})
+            if(this.state.RunTimeModelResponses[i].sortsize == size){
+              Merge.push(this.state.RunTimeModelResponses[i].runtime)
+            }
             break;
           case 'quick':
-            Quick.push({x: this.state.RunTimeModelResponses[i].sortsize,  y: this.state.RunTimeModelResponses[i].runtime})
+            if(this.state.RunTimeModelResponses[i].sortsize == size){
+              Quick.push(this.state.RunTimeModelResponses[i].runtime)
+            }
             break;
           case 'heap':
-            Heap.push({x: this.state.RunTimeModelResponses[i].sortsize,  y: this.state.RunTimeModelResponses[i].runtime})
+            if(this.state.RunTimeModelResponses[i].sortsize == size){
+              Heap.push(this.state.RunTimeModelResponses[i].runtime)
+            }
             break;
           case 'insertion':
-            Insertion.push({x: this.state.RunTimeModelResponses[i].sortsize,  y: this.state.RunTimeModelResponses[i].runtime})
+            if(this.state.RunTimeModelResponses[i].sortsize == size){
+              Insertion.push(this.state.RunTimeModelResponses[i].runtime)
+            }
             break;
           default:
             break;
       }
     }
-    console.log(Bubble);
+    let BubbleAverage = AverageArray(Bubble);
+    let MergeAverage = AverageArray(Merge);
+    let QuickAverage = AverageArray(Quick);
+    let HeapAverage = AverageArray(Heap);
+    let InsertionAverage = AverageArray(Insertion);
     this.setState({
-      data : {
-        labels: BubbleLabels,
-            datasets: [
-              {
-                label: 'Bubble',
-                fill: false,
-                showLine: true, 
-                backgroundColor: 'rgba(75,192,192,0.4)',
-                pointBorderColor: 'rgba(75,192,192,1)',
-                pointBackgroundColor: '#fff',
-                pointBorderWidth: 1,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                pointHoverBorderColor: 'rgba(220,220,220,1)',
-                pointHoverBorderWidth: 2,
-                pointRadius: 1,
-                pointHitRadius: 10,
-                data: Bubble
-              }
-            ]
+      data : {      
+        labels : ['Bubble', 'Merge', 'Quick', 'Heap', 'Insertion'],
+        datasets : [{
+          label : ['Runtime'],
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: 'rgba(255,99,132,1)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+          hoverBorderColor: 'rgba(255,99,132,1)',
+          data : [BubbleAverage,MergeAverage,QuickAverage,HeapAverage,InsertionAverage]
+        }]
+        
       }
     });
-    
-      
   }
   async GenerateNewTestCases(){
     if(this.state.disabled === true) { return; }
     this.setState({disabled : true});
     let sorttype;
     let RunTimeModelArray = [];
-    for(let size = 2500; size <= 2500; size+=1){
+    for(let size = 100; size <= 100; size+=1){
       for(let j = 0; j < 5; j++){
         switch(j){
           case 0:
@@ -177,29 +183,49 @@ export default class Runtimes extends React.Component{
     }
     return array;
   }
-
+  onSizeSliderChange(event){
+    size = event.target.value; 
+  }
  
   render()
   {
     return (
       <div className="total-container">
         <div>
-          <LineChart
+          <Bar
           data={this.state.data}
-          options={this.state.options}
-          width="600" height="250">
-          </LineChart>
+          options={this.state.options}>
+          </Bar>
         </div>
         <div>
           <button className="button"
                   onClick={() => this.GenerateNewTestCases()}>
                   Generate new test cases</button>
           <button className="button"
-                  onClick={() => this.CheckTest()}>
-                  Check</button>
+                  onClick={() => this.SetGraphData()}>
+                  Re-generate graph</button>
         </div>
+        <div>
+            <label className="text">Array Size</label>
+            <input 
+            className="slider"
+            type="range" 
+            min="5"
+            max="200"
+            value={this.state.value}
+            onChange={this.onSizeSliderChange}>
+            </input>
+          </div>
       </div >
     );
   }
 
+}
+function AverageArray(array){
+  const size = array.length;
+  let sum = 0;
+  for(let i = 0; i < size; i++){
+    sum += array[i];
+  }
+  return sum/size;
 }
