@@ -5,6 +5,9 @@ import getHeapSortAnimations from './Algorithms/heapsort';
 import getQuickSortAnimations from './Algorithms/quicksort';
 import getMergeSortAnimations from './Algorithms/mergesort';
 import getInsertionSortAnimations from './Algorithms/insertionsort';
+//This file is the main body of the first page.
+
+
 
 const primaryColour = "#70b8c7"; //Air Superiority blue
 const selectedColour = "#383683"; //Purple
@@ -40,8 +43,8 @@ export default class Sort extends React.Component{
   }
   //This is so that *hopefully* this will work on any sized screen as the compenents will be generated based on screen size
   updateWindowDimensions() {
-    width =  (window.innerWidth*(0.9));
-    height = (window.innerHeight*(0.9));
+    width =  (window.innerWidth*(0.825));
+    height = (window.innerHeight*(0.825));
   }
   StartSorting(){
     isRunning = true;
@@ -73,15 +76,14 @@ export default class Sort extends React.Component{
   }
   //Instead of returning a sorted array, these algorithms sort the array but return
   //an array of the order in which the elements were sorted giving an animation array.
-  //This allows for features such as pausing and playing to be added with more ease.
   async BubbleSort(){
     let animations = getBubbleSortAnimations(this.state.array.slice());
-    const size = animations.length;
+    const length = animations.length;
     let arrayBars = document.getElementsByClassName("array-bar");
     this.StartSorting();
-    for(let i=0;i<size;i++){
+    for(let i=0;i<length;i++){
       if(isRunning){
-        let [barOneIndex, barTwoIndex] = animations[i]
+        let [barOneIndex, barTwoIndex, barOneHeight, barTwoHeight] = animations[i]
 
         let barOneStyle = arrayBars[barOneIndex].style;
         let barTwoStyle = arrayBars[barTwoIndex].style;
@@ -90,14 +92,12 @@ export default class Sort extends React.Component{
         barTwoStyle.backgroundColor = selectedColour;
         await wait(animationSpeed);
   
-        if(parseInt(arrayBars[barOneIndex].style.height) > parseInt(arrayBars[barTwoIndex].style.height)){
-  
-          let temp = arrayBars[barTwoIndex].style.height;
-          arrayBars[barTwoIndex].style.height = arrayBars[barOneIndex].style.height;
-          arrayBars[barOneIndex].style.height = temp;
-  
-          barOneStyle.backgroundColor = successColour;
-          barTwoStyle.backgroundColor = successColour;
+        if(parseInt(barOneHeight) > parseInt(barTwoHeight)){
+          barOneStyle.height = `${barTwoHeight}px`;
+          this.state.array[barOneIndex] = barTwoHeight;
+
+          barTwoStyle.height = `${barOneHeight}px`;
+          this.state.array[barTwoIndex] = barOneHeight;
           await wait(animationSpeed);
         }else{
           barOneStyle.backgroundColor = failedColour;
@@ -111,7 +111,7 @@ export default class Sort extends React.Component{
         return;
       }
     }
-    this.AnimationFinished();
+    await this.AnimationFinished();
   }
 
   async MergeSort(){
@@ -130,7 +130,8 @@ export default class Sort extends React.Component{
         barOneStyle.backgroundColor = selectedColour;
         barTwoStyle.backgroundColor = selectedColour;
         await wait(animationSpeed);
-        arrayBars[barTwoIndex].style.height = `${barHeight}px`;
+        barTwoStyle.height = `${barHeight}px`;
+        this.state.array[barTwoIndex] = barHeight;
         await wait(animationSpeed);
         barOneStyle.backgroundColor = primaryColour;
         barTwoStyle.backgroundColor = primaryColour;
@@ -154,7 +155,11 @@ export default class Sort extends React.Component{
         arrayBars[barTwoIndex].style.backgroundColor = selectedColour;
         await wait(animationSpeed);
         arrayBars[barOneIndex].style.height = `${barTwoHeight}px`;
+        this.state.array[barOneIndex] = barTwoHeight;
+
         arrayBars[barTwoIndex].style.height = `${barOneHeight}px`;
+        this.state.array[barTwoIndex] = barOneHeight;
+
         arrayBars[barOneIndex].style.backgroundColor = successColour;
         arrayBars[barTwoIndex].style.backgroundColor = successColour;
         await wait(animationSpeed);
@@ -179,7 +184,11 @@ export default class Sort extends React.Component{
         if(animations[i].length === 4){
           let [barOneIndex, barTwoIndex, barOneHeight, barTwoHeight] = animations[i];   
           arrayBars[barOneIndex].style.height = `${barTwoHeight}px`;
+          this.state.array[barOneIndex] = barTwoHeight;
+
           arrayBars[barTwoIndex].style.height = `${barOneHeight}px`;
+          this.state.array[barTwoIndex] = barOneHeight;
+
           arrayBars[barOneIndex].style.backgroundColor = successColour;
           arrayBars[barTwoIndex].style.backgroundColor = successColour;
           await wait(animationSpeed);
@@ -188,10 +197,10 @@ export default class Sort extends React.Component{
         }
         else if(animations[i].length === 2){
           if(i !== 0){
-            let [previousPivot, notpivot] = animations[i-1];
+            let [previousPivot] = animations[i-1];
             arrayBars[previousPivot].style.backgroundColor = primaryColour;
           }
-          let [pivotIndex, pivot] = animations[i];
+          let [pivotIndex] = animations[i];
           arrayBars[pivotIndex].style.backgroundColor = pivotColour;
           tempPivotIndex = pivotIndex;
           await wait(animationSpeed);
@@ -221,14 +230,19 @@ export default class Sort extends React.Component{
           let [barOneIndex, barTwoIndex, barOneHeight] = animations[i];
           arrayBars[barOneIndex].style.backgroundColor = selectedColour;
           arrayBars[barTwoIndex].style.backgroundColor = selectedColour;
+          
           arrayBars[barOneIndex+1].style.height = `${barOneHeight}px`;
+          this.state.array[barOneIndex+1] = barOneHeight;
+
           await wait(animationSpeed);
           arrayBars[barOneIndex].style.backgroundColor = primaryColour;
           arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
         }
         else{
-          let [barOneIndex, keyHeight, turn] = animations[i];
+          let [barOneIndex, keyHeight] = animations[i];
           arrayBars[barOneIndex].style.height = `${keyHeight}px`;
+          this.state.array[barOneIndex] = keyHeight;
+
           await wait(animationSpeed);
         }
       }
@@ -246,20 +260,6 @@ export default class Sort extends React.Component{
     }
     this.setState({ array });
   }
-  
-  shuffle(array) {
-    //Fisher-Yates Shuffle - most time efficient shuffle algorithm which is important 
-    //for when you are generating this many arrays.
-    let counter = array.length;
-    while (counter > 0) {
-        let index = Math.floor(Math.random() * counter);
-        counter--;
-        let temp = array[counter];
-        array[counter] = array[index];
-        array[index] = temp;
-    }
-    return array;
-}
 
   onSizeSliderChange(event){
     size = event.target.value;
@@ -306,7 +306,7 @@ export default class Sort extends React.Component{
               <button className="stopbutton" onClick={() => this.StopRunning()}>Stop</button>
           </div>
           <div>
-            <label class="text">Size &nbsp;</label>
+            <label className="text">Size &nbsp;</label>
             <input 
             class="slider"
             id = "size-slider"
@@ -318,7 +318,7 @@ export default class Sort extends React.Component{
             </input>
           </div>
           <div>
-            <label class="text">Speed</label>
+            <label className="text">Speed</label>
             <input 
             class="slider"
             type="range" 
@@ -337,7 +337,7 @@ export default class Sort extends React.Component{
 function wait(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-function getRandomNumber(min, max){
+export function getRandomNumber(min, max){
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 

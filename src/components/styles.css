@@ -1,7 +1,9 @@
 .array-container{
     width: 95%;
-    padding: 10px;
+    padding-top: 5%;
+    margin: auto;
     display: inline-block;
+    text-align: center;
 }
 .array-bar{
     margin: 0 1px;
@@ -11,7 +13,13 @@
     margin: 0 1px;
     display: inline-block;
 }
-
+.footer-container{
+  width: 95%;
+  padding-top: 1%;
+  margin: auto;
+  display: inline-block;
+  text-align: center;
+}
 .slider{
     -webkit-appearance: none;
     background: #d3d3d3;
@@ -21,7 +29,7 @@
     opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
-    width: 50%
+    width: 50%;
 }
 .slider:hover {
     opacity: 1; 
@@ -36,6 +44,7 @@
     cursor: pointer;
   }
   .disabledbutton{
+    margin: auto;
     background-color: #33c3d6; 
     border: none;
     color: white;
@@ -81,5 +90,4 @@
     font: outline;
     font-variant: initial;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    
 }
