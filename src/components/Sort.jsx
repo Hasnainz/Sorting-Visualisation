@@ -8,7 +8,6 @@ import getInsertionSortAnimations from './Algorithms/insertionsort';
 //This file is the main body of the first page.
 
 
-
 const primaryColour = "#70b8c7"; //Air Superiority blue
 const selectedColour = "#383683"; //Purple
 const successColour = "#97DB4F"; //Inchworm green
@@ -22,18 +21,25 @@ let size, pixelwidth, width, height, animationSpeed;
 export default class Sort extends React.Component{
   constructor(properties){
     super(properties);
+
+    //I have placed the array that is being sorted into the React state so that 
+    //I can access it from anywhere across the program and that it automatically
+    //rerenders the graph visuals whenever the array changes.
     this.state = { array: []};
 
+    //This binds the buttons listeners with functions within the code.
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     this.onSizeSliderChange = this.onSizeSliderChange.bind(this);
     this.onSpeedSliderChange = this.onSpeedSliderChange.bind(this);
   }
   //On startup, this is what runs.
   componentDidMount(){
+    //Whenever a resize event is fired, the update window dimensions subroutine is called.
     window.addEventListener('resize', this.updateWindowDimensions());
-    this.updateWindowDimensions();
+    //This assigns initial values to the sliders so that they will work from the start.    
     size = 100;
     animationSpeed = 100;
+    //This calculates how wide the width of each bar should be based on the size of the screen.
     pixelwidth = Math.floor((width/(size*2)));
     this.resetArray();
   }
@@ -43,22 +49,27 @@ export default class Sort extends React.Component{
   }
   //This is so that *hopefully* this will work on any sized screen as the compenents will be generated based on screen size
   updateWindowDimensions() {
+    //Dynamically updating the height and width of the objects on the screen.
     width =  (window.innerWidth*(0.825));
     height = (window.innerHeight*(0.825));
   }
   StartSorting(){
+    //This disables the buttons so that multiple animations on the same array can't run at the same time.
     isRunning = true;
     let buttons = document.getElementsByClassName("disabledbutton");
     for(let button of buttons){
       button.disabled = true;
     }
+    //This disables the size slider so that you can't change the size of the array while it is running. 
     let slider = document.getElementById("size-slider");
     slider.disabled = true;
   }
   StopRunning(){
     isRunning = false;
+    //This freezes the current state of the array.
     const arr = this.state.array;
     this.setState({ arr });
+    //Undisables the buttons.
     let buttons = document.getElementsByClassName("disabledbutton");
     for(let button of buttons){
       button.disabled = false;
@@ -67,6 +78,7 @@ export default class Sort extends React.Component{
     slider.disabled = false;
   }
   async AnimationFinished(){
+    //A flashing green effect so that the user knows it is sorted.
     barColour = successColour;
     this.forceUpdate();
     await wait(1000);
@@ -77,12 +89,15 @@ export default class Sort extends React.Component{
   //Instead of returning a sorted array, these algorithms sort the array but return
   //an array of the order in which the elements were sorted giving an animation array.
   async BubbleSort(){
+    //This sends a copy of the array so that the array isn't passed in by val
     let animations = getBubbleSortAnimations(this.state.array.slice());
     const length = animations.length;
     let arrayBars = document.getElementsByClassName("array-bar");
     this.StartSorting();
     for(let i=0;i<length;i++){
+      //Checks if the stop button has been clicked.
       if(isRunning){
+        //Assigns the indexes and heights to variables to be swapped and changed colours.
         let [barOneIndex, barTwoIndex, barOneHeight, barTwoHeight] = animations[i]
 
         let barOneStyle = arrayBars[barOneIndex].style;
@@ -122,9 +137,10 @@ export default class Sort extends React.Component{
     for(let i = 0; i < length; i++){
       if(isRunning){
         let [barOneIndex, barTwoIndex, barHeight] = animations[i];
+        //This acts as a buffer so that if the maximum size is reached, it won't have an out of bounds error.
         if(barOneIndex === size) barOneIndex--;
         if(barTwoIndex === size) barTwoIndex--;
-  
+        //Change colours then height then colours.
         let barOneStyle = arrayBars[barOneIndex].style;
         let barTwoStyle = arrayBars[barTwoIndex].style;
         barOneStyle.backgroundColor = selectedColour;
