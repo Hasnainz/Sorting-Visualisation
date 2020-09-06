@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import './RuntimeStyles.css';
+import './Styles/RuntimeStyles.css';
 import getBubbleSortAnimations from './Algorithms/bubblesort';
 import getHeapSortAnimations from './Algorithms/heapsort';
 import getQuickSortAnimations from './Algorithms/quicksort';
@@ -33,13 +33,13 @@ export default class Runtimes extends React.Component{
   async PushRunTimeData(){
     let size = this.state.RunTimeModels.length;
     for(let i = 0; i < size; i++){
-      await axios.post('http://localhost:5000/runtime/add', this.state.RunTimeModels[i])
+      await axios.post('https://sorting-runtimes.herokuapp.com/add', this.state.RunTimeModels[i])
       .then(res => console.log(res.data));
     }
     this.componentDidMount();
   }
   componentDidMount(){
-    axios.get('http://localhost:5000/runtime/')
+    axios.get('https://sorting-runtimes.herokuapp.com/')
     .then(response => {
       if (response.data.length > 0) {
         this.setState({
@@ -112,7 +112,7 @@ export default class Runtimes extends React.Component{
     this.setState({disabled : true});
     let sorttype;
     let RunTimeModelArray = [];
-    for(let size = 100; size <= 100; size+=1){
+    for(let size = 1000; size <= 1000; size+=1){
       for(let j = 0; j < 5; j++){
         switch(j){
           case 0:

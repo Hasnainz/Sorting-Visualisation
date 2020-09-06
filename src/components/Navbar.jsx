@@ -1,5 +1,5 @@
 import React from "react";
-import './NavbarStyles.css';
+import './Styles/NavbarStyles.css';
 import { Link } from 'react-router-dom';
 const Navbar = props => (
   <header className="navbar">
