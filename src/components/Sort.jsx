@@ -7,7 +7,7 @@ import getMergeSortAnimations from './Algorithms/mergesort';
 import getInsertionSortAnimations from './Algorithms/insertionsort';
 //This file is the main body of the first page.
 
-
+//This is to fit with solution requirement 2 so that the user has an easier time seeing what is going on.
 const primaryColour = "#70b8c7"; //Air Superiority blue
 const selectedColour = "#383683"; //Purple
 const successColour = "#97DB4F"; //Inchworm green
@@ -105,8 +105,10 @@ export default class Sort extends React.Component{
   
         barOneStyle.backgroundColor = selectedColour;
         barTwoStyle.backgroundColor = selectedColour;
+        //This function sets a promise lasting the time specified in 
+        //ms so that the animations don't happen instantly and can't be seen.
         await wait(animationSpeed);
-  
+        //This performs the same bubble sort calculation to swap them if they are larger.
         if(parseInt(barOneHeight) > parseInt(barTwoHeight)){
           barOneStyle.height = `${barTwoHeight}px`;
           this.state.array[barOneIndex] = barTwoHeight;
@@ -146,6 +148,8 @@ export default class Sort extends React.Component{
         barOneStyle.backgroundColor = selectedColour;
         barTwoStyle.backgroundColor = selectedColour;
         await wait(animationSpeed);
+        //Since the merge sort algorithm worked by overidding the array, doing the same here
+        //would be correct to fit in with solution requirement 3 of accuracy.
         barTwoStyle.height = `${barHeight}px`;
         this.state.array[barTwoIndex] = barHeight;
         await wait(animationSpeed);
@@ -166,6 +170,8 @@ export default class Sort extends React.Component{
     this.StartSorting();
     for(let i = 0; i < length; i++){
       if(isRunning){
+        //This swaps the height of two bars simultaneously to be accurate to heap sort swapping
+        //parent with children values if needed fitting solution requirement 3.
         let [barOneIndex, barTwoIndex, barOneHeight, barTwoHeight] = animations[i];   
         arrayBars[barOneIndex].style.backgroundColor = selectedColour;
         arrayBars[barTwoIndex].style.backgroundColor = selectedColour;
@@ -197,7 +203,9 @@ export default class Sort extends React.Component{
     this.StartSorting();
     for(let i = 0; i < length; i++){
       if(isRunning){
+        //This organises the animations information to split it into swapping or pivot values.
         if(animations[i].length === 4){
+          //This is the swapping of the two i and j values in quicksort when they are being compared.
           let [barOneIndex, barTwoIndex, barOneHeight, barTwoHeight] = animations[i];   
           arrayBars[barOneIndex].style.height = `${barTwoHeight}px`;
           this.state.array[barOneIndex] = barTwoHeight;
@@ -212,6 +220,8 @@ export default class Sort extends React.Component{
           arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
         }
         else if(animations[i].length === 2){
+          //This is to display the pivot value onto the screen so that you can see
+          //What it is being compared against.
           if(i !== 0){
             let [previousPivot] = animations[i-1];
             arrayBars[previousPivot].style.backgroundColor = primaryColour;
@@ -222,6 +232,7 @@ export default class Sort extends React.Component{
           await wait(animationSpeed);
         }
         else{
+          //If it is not a pivot value or a swap, then this just shows what is being selected. 
           let [barOneIndex] = animations[i];
           arrayBars[barOneIndex].style.backgroundColor = selectedColour;
           await wait(animationSpeed);
@@ -243,10 +254,13 @@ export default class Sort extends React.Component{
     for(let i = 0; i < length; i++){
       if(isRunning){
         if(animations[i].length === 3){
+          //This is the selection animation
           let [barOneIndex, barTwoIndex, barOneHeight] = animations[i];
+          //Comparison
           arrayBars[barOneIndex].style.backgroundColor = selectedColour;
           arrayBars[barTwoIndex].style.backgroundColor = selectedColour;
-          
+          //Acts like a memory buffer since the values are overwritten then rewritten to where they 
+          //should be.
           arrayBars[barOneIndex+1].style.height = `${barOneHeight}px`;
           this.state.array[barOneIndex+1] = barOneHeight;
 
@@ -255,6 +269,7 @@ export default class Sort extends React.Component{
           arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
         }
         else{
+          //Insertion
           let [barOneIndex, keyHeight] = animations[i];
           arrayBars[barOneIndex].style.height = `${keyHeight}px`;
           this.state.array[barOneIndex] = keyHeight;
@@ -270,6 +285,7 @@ export default class Sort extends React.Component{
   }
   
   resetArray(){
+    //This generates a random array.
     let array = [];
     for (let i = 0; i < size-1; i++){
       array.push(getRandomNumber(10, height));
@@ -278,6 +294,7 @@ export default class Sort extends React.Component{
   }
 
   onSizeSliderChange(event){
+    //This takes the value from the event parameter which is actually the slider.
     size = event.target.value;
     pixelwidth = Math.floor((width/(size*2)));
     if(pixelwidth < 1) pixelwidth = 1;
@@ -285,6 +302,9 @@ export default class Sort extends React.Component{
   }
   
   onSpeedSliderChange(event){
+    //This sets the animation speed but I wanted to set it so that the larger the 
+    //slider, the faster the animation so I have set it subtract the target value instead
+    //of the other way round.
     animationSpeed = 1000 - event.target.value;
   }
 
@@ -294,6 +314,8 @@ export default class Sort extends React.Component{
     return (
       <div className="total-container">
         <div className="array-container">
+         {/*This places in an invisible bar acting like a support beam so that the buttons don't change 
+         height based on the array sizes.*/} 
           <div className="not-array-bar"
               style={{
               backgroundColor: backgroundColour,
@@ -301,6 +323,8 @@ export default class Sort extends React.Component{
               width: `${1}px`,
               }}
           ></div>
+          {/*This maps the array values to the div heights which makes the on screen visual 
+          and extremely easy to update since I can alter the styles or the array to change the visuals.*/}
           {array.map((value, index) => (
             <div className="array-bar"
               key={index}
@@ -312,7 +336,7 @@ export default class Sort extends React.Component{
           ))}
         </div>
         <div className="footer-container">
-          <div>
+          <div>{/*Call backs of what the buttons do.*/}
               <button className="disabledbutton" onClick={() => this.resetArray()}>Generate New Array</button>
               <button className="disabledbutton" onClick={() => this.MergeSort()}>Merge Sort</button>
               <button className="disabledbutton" onClick={() => this.BubbleSort()}>Bubble Sort</button>
@@ -321,7 +345,7 @@ export default class Sort extends React.Component{
               <button className="disabledbutton" onClick={() => this.InsertionSort()}>Insertion Sort</button>
               <button className="stopbutton" onClick={() => this.StopRunning()}>Stop</button>
           </div>
-          <div>
+          <div>{/*&nbsp; is a space. The min and max sizes are set here as well.*/}
             <label className="text">Size &nbsp;</label>
             <input 
             class="slider"
@@ -333,7 +357,7 @@ export default class Sort extends React.Component{
             onChange={this.onSizeSliderChange}>
             </input>
           </div>
-          <div>
+          <div>{/*The speed is set here so that the slowest speed is 10 seconds and slowest is 0 seconds*/}
             <label className="text">Speed</label>
             <input 
             class="slider"
@@ -351,6 +375,7 @@ export default class Sort extends React.Component{
 
 }
 function wait(ms) {
+  //This resolves a promise which waits for the setTimeout to resolve for the time in ms.
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 export function getRandomNumber(min, max){
