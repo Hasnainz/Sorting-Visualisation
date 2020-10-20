@@ -1,0 +1,10 @@
+.array-container {
+    display: inline-block;
+    margin: 2.5%;
+}
+.array-bar{
+    margin: 0 1px;
+    display: inline-block;
+    background-color: aqua;
+}
+
