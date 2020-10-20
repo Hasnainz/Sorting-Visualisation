@@ -10,7 +10,7 @@ export default function getMergeSortAnimations(array){
 function MergeSort(array, auxillaryArray, start, end, animations){
     if(start === end) return;
     const middle = Math.floor((start + end)/2);
-    //I first run merge sort recursively on the first half of the array. and
+    //I first run merge sort recursively on the first half of the array.
     MergeSort(auxillaryArray, array, start, middle, animations);
     //Then run merge sort recursively on the second half of the array.
     MergeSort(auxillaryArray, array, middle + 1, end, animations);
