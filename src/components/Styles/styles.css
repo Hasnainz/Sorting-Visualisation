@@ -1,10 +1,51 @@
 .array-container {
-    display: inline-block;
-    margin: 2.5%;
+    margin: 1%;
 }
-.array-bar{
-    margin: 0 1px;
+.array {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 1%;
+    background-color: whitesmoke;
+}
+.array-bar {
+    margin: 0 2px;
     display: inline-block;
+    background-color: rebeccapurple;
+}
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: yellow;
+    margin: 1%;
+}
+.sort-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: violet;
+}
+.slider-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: aquamarine;
+    margin: 1%;
+}
+.main-button {
     background-color: aqua;
+}
+.medium-button {
+    background-color: darkgrey;
+}
+.small-button {
+    background-color: pink;
+}
+.slider-label {
+    font-weight: bold;
+}
+.main-slider {
+    width: 60%;
 }
 
