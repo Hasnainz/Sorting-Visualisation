@@ -75,12 +75,6 @@ export default class Sort extends React.Component {
                 </div>
 
                 <div className="button-container">
-                    <button onClick={this.toggleSorting} className="main-button">
-                        {!this.state.isSorting ? 'Sort' : 'Stop'}
-                    </button>
-                </div>
-                
-                <div className="button-container">
                     <button className="medium-button" 
                             value="-" 
                             onClick={(e) => this.handleAddArray(e)}>-</button>
@@ -91,21 +85,30 @@ export default class Sort extends React.Component {
                     <button className="medium-button" 
                         value="+"
                          onClick={(e) => this.handleAddArray(e)}>+</button>
-                </div>
 
-                <div className="slider-container">
-                    <label htmlFor="size" className="slider-label">Size</label>
-                    <input 
-                        className="size-slider"
-                        type="range" 
-                        id="size" 
-                        min="4"
-                        max={calculateMaxArraySize(window.innerWidth)}
-                        value={this.state.size}
-                        onChange={this.handleSizeSlider}/>
+                    <button onClick={this.toggleSorting} 
+                            className="main-button"
+                            style={{
+                                backgroundColor: !this.state.isSorting ? '#3DCBE0' : '#FA5E3F'
+                            }}>
+                        {!this.state.isSorting ? 'Sort' : 'Stop'}
+                    </button>
+               </div>
+               
+               <div className="slider-container">
+                <label className="size-slider-label">
+                        <input className="size-slider"
+                            type="range" 
+                            id="size" 
+                            min="4"
+                            max={calculateMaxArraySize(window.innerWidth)}
+                            value={this.state.size}
+                            onChange={this.handleSizeSlider}/>
+                        Size
+                    </label>
+                </div>
 
                     
-                </div>
             </div>
         )
     }

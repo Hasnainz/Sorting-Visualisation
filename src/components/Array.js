@@ -282,56 +282,66 @@ export default class Array extends React.Component {
                 }}></div>))}
 
                 <div className="sort-button-container">
-                    <input type="radio" className="radio-button" 
-                           id="merge" 
-                           value="merge"
-                           checked={this.state.sortType === "merge"} 
-                           name={`${this.props.index}`} 
-                           onChange={this.handleSortTypeButtons}/>
-                    <label htmlFor="merge" className="radio-label">Merge</label>
-
-                    <input type="radio" 
-                           className="radio-button"
-                           id="insertion" 
-                           value="insertion" 
-                           checked={this.state.sortType === "insertion"} 
-                           name={`${this.props.index}`} 
-                           onChange={this.handleSortTypeButtons}/>
-                    <label htmlFor="insertion" className="radio-label">Insertion</label>
-
+                    <label className="radio-label">
+                        <input type="radio" className="radio-button" 
+                            id="merge" 
+                            value="merge"
+                            checked={this.state.sortType === "merge"} 
+                            name={`${this.props.index}`} 
+                            onChange={this.handleSortTypeButtons}/>
+                        Merge
+                    </label>
+                    <label className="radio-label">
+                        <input type="radio" 
+                            className="radio-button"
+                            id="insertion" 
+                            value="insertion" 
+                            checked={this.state.sortType === "insertion"} 
+                            name={`${this.props.index}`} 
+                            onChange={this.handleSortTypeButtons}/>
+                        Insertion
+                    </label>
+                    
+                    <label className="radio-label">
                     <input type="radio" className="radio-button"
                            id="quick" 
                            value="quick" 
                            checked={this.state.sortType === "quick"} 
                            name={`${this.props.index}`} 
                            onChange={this.handleSortTypeButtons}/>
-                    <label htmlFor="quick" className="radio-label">Quick</label>
+                        Quick
+                    </label>
 
+                    <label className="radio-label">
                     <input type="radio" className="radio-button"
                            id="bubble" 
                            value="bubble" 
                            checked={this.state.sortType === "bubble"} 
                            name={`${this.props.index}`} 
                            onChange={this.handleSortTypeButtons}/>
-                    <label htmlFor="bubble" className="radio-label">Bubble</label>
+                        Bubble
+                    </label>
 
+                    <label className="radio-label">
                     <input type="radio" className="radio-button"
                            id="heap" 
                            value="heap" 
                            checked={this.state.sortType === "heap"} 
                            name={`${this.props.index}`} 
                            onChange={this.handleSortTypeButtons}/>
-                    <label htmlFor="heap" className="radio-label">Heap</label>
+                        Heap
+                    </label>
 
-                    <label htmlFor="speed" className="slider-label">Speed</label>
-                        <input 
-                            className="speed-slider"
+                    <label className="slider-label">
+                        <input className="speed-slider"
                             type="range" 
                             id="speed"
                             min="0"
                             max="1000"
                             value={1000 - this.state.speed}
                             onChange={(e) => this.handleSpeedSlider(e)}/>
+                        Speed
+                    </label>
                    
                 </div>
             </div>
@@ -374,7 +384,7 @@ function compareArrays(array1, array2){
     return true;
 }
 function calculatePixelWidth(WindowWidth, ArraySize) {
-    return (WindowWidth*0.35/ArraySize);
+    return (WindowWidth*0.36/ArraySize);
 }
 function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
