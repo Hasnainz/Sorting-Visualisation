@@ -7,12 +7,12 @@ export default class ArrayContainer extends React.Component {
     render() {
         const arraycount = this.props.arraycount;
         let ArrayS = [];
-        for(let i=0;i<arraycount;i++){
+        for(let i = 0; i < arraycount; i++){
             ArrayS.push(
             <Array array={this.props.array}
-                   width={this.props.width}
                    maxheight={this.props.maxheight} 
-                   index={i}/>
+                   index={i}
+                   shouldSort={this.props.isSorting}/>
             );
         }
         return(

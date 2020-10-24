@@ -9,6 +9,12 @@
     background-color: whitesmoke;
 }
 .array-bar {
+    
+    display: inline-block;
+    margin: 0 2px;
+    background-color: #663399;
+}
+.transparent-array-bar {
     margin: 0 2px;
     display: inline-block;
     background-color: rebeccapurple;
@@ -43,9 +49,10 @@
     background-color: pink;
 }
 .slider-label {
+    margin-left: 4%;
     font-weight: bold;
 }
 .main-slider {
-    width: 60%;
+    width: 40%;
 }
 

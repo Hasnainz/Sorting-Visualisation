@@ -5,9 +5,10 @@ import './Styles/Styles.css';
 export default class Sort extends React.Component {
     constructor(props){
         super(props);
-        const size = calculateMaxArraySize(this.props.width);
-        const barlength = calculateBarLength(this.props.height, 3)
+        const size = calculateMaxArraySize(window.innerWidth);
+        const barlength = calculateBarLength(window.innerHeight, 3)
         this.state = {
+            isSorting: false,
             size: size,
             barlength: barlength,
             array: getRandomArray(size, barlength),
@@ -16,11 +17,18 @@ export default class Sort extends React.Component {
         this.handleSizeSlider = this.handleSizeSlider.bind(this);
         this.handleAddArray = this.handleAddArray.bind(this);
         this.handleResetArray = this.handleResetArray.bind(this);
-    }
+        this.toggleSorting = this.toggleSorting.bind(this);
 
+    }
+    toggleSorting() {
+        this.setState((state) => ({
+            isSorting: !state.isSorting,
+        }));
+    }
     handleSizeSlider(event) {
         const size = event.target.value;
         this.setState((state) => ({
+            isSorting: false,
             size: size,
             array: getRandomArray(size, state.barlength)
         }))
@@ -29,10 +37,12 @@ export default class Sort extends React.Component {
     handleResetArray() {
         const arr = getRandomArray(this.state.size, this.state.barlength)
         this.setState({
+            isSorting: false,
             array: arr,
         })
     }
 
+   
     handleAddArray(e) {
         let arraycount = this.state.arraycount;
         if(arraycount < 5 && e.target.value === "+") {
@@ -44,8 +54,9 @@ export default class Sort extends React.Component {
         else{
             return;
         }
-        const barlength = calculateBarLength(this.props.height, arraycount)
+        const barlength = calculateBarLength(window.innerHeight, arraycount)
         this.setState({
+            isSorting: false,
             arraycount: arraycount,
             barlength: barlength,
             array: getRandomArray(this.state.size, barlength)
@@ -57,12 +68,18 @@ export default class Sort extends React.Component {
             <div>
                 <div className="array-container">
                     <ArrayContainer
-                        width={this.props.width}
                         arraycount={this.state.arraycount} 
                         array={this.state.array}
-                        maxheight={this.state.barlength}/>
+                        maxheight={this.state.barlength}
+                        isSorting={this.state.isSorting}/>
                 </div>
 
+                <div className="button-container">
+                    <button onClick={this.toggleSorting} className="main-button">
+                        {!this.state.isSorting ? 'Sort' : 'Stop'}
+                    </button>
+                </div>
+                
                 <div className="button-container">
                     <button className="medium-button" 
                             value="-" 
@@ -83,9 +100,11 @@ export default class Sort extends React.Component {
                         type="range" 
                         id="size" 
                         min="4"
-                        max={calculateMaxArraySize(this.props.width)}
+                        max={calculateMaxArraySize(window.innerWidth)}
                         value={this.state.size}
                         onChange={this.handleSizeSlider}/>
+
+                    
                 </div>
             </div>
         )
