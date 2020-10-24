@@ -6,53 +6,56 @@
     flex-direction: row;
     justify-content: center;
     margin: 1%;
-    background-color: whitesmoke;
 }
 .array-bar {
-    
     display: inline-block;
     margin: 0 2px;
-    background-color: #663399;
+    background-color: #3DCBE0;
 }
 .transparent-array-bar {
-    margin: 0 2px;
     display: inline-block;
-    background-color: rebeccapurple;
 }
 .button-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: yellow;
     margin: 1%;
 }
 .sort-button-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: violet;
+    background-color: #198494 
 }
 .slider-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: aquamarine;
-    margin: 1%;
+    background-color: #198494;
+    margin-left: 30%;
+    margin-right: 30%;
 }
 .main-button {
-    background-color: aqua;
+    background-color: #3DCBE0;
+    font-size: 200%;
+    border: none;
 }
 .medium-button {
-    background-color: darkgrey;
+    background-color: #3DCBE0;
+    font-size: 150%;
+    border: none;
 }
-.small-button {
-    background-color: pink;
+.radio-label {
+    color: #ffffff;
 }
 .slider-label {
     margin-left: 4%;
-    font-weight: bold;
+    color: #ffffff;
 }
-.main-slider {
-    width: 40%;
+.speed-slider {
+    width: 50%;
+}
+.size-slider {
+    width: 90%;
 }
 

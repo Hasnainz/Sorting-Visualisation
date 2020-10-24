@@ -96,7 +96,7 @@ export default class Sort extends React.Component {
                 <div className="slider-container">
                     <label htmlFor="size" className="slider-label">Size</label>
                     <input 
-                        className="main-slider"
+                        className="size-slider"
                         type="range" 
                         id="size" 
                         min="4"
@@ -111,11 +111,11 @@ export default class Sort extends React.Component {
     }
 }
 function calculateBarLength(WindowHeight, NumberOfArrays) {
-    return Math.floor((WindowHeight*0.55)/NumberOfArrays);
+    return Math.floor((WindowHeight*0.64)/NumberOfArrays);
 }
 
 function calculateMaxArraySize(WindowWidth) {
-    return Math.floor(WindowWidth * 0.1475);
+    return Math.floor(WindowWidth * 0.147);
 }
 
 function getRandomArray(size, maxlength) { 

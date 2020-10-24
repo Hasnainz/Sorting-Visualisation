@@ -6,11 +6,11 @@ import getQuickSortAnimations from './Algorithms/quicksort';
 import getMergeSortAnimations from './Algorithms/mergesort';
 import getInsertionSortAnimations from './Algorithms/insertionsort';
 
-const primaryColour = "#663399"; //Air Superiority blue
-const selectedColour = "#70b8c7"; //Purple
-const successColour = "#97DB4F"; //Inchworm green
-const failedColour = "#D64933"; //Cinnabar
-const pivotColour = "#383683"; //Deep Jungle Green
+const primaryColour = "#3DCBE0"; //blue
+const selectedColour = "#7662F5"; //purple
+const successColour = "#43F04F"; //green
+const failedColour = "#FA5E3F"; //red
+const pivotColour = "#198494"; //dark blue
 
 export default class Array extends React.Component {
     constructor(props) {
@@ -41,23 +41,24 @@ export default class Array extends React.Component {
             })
         }
         const array = this.state.array.slice();
+        let arrayBars = document.getElementsByName(`array${this.props.index}`)
         if(this.props.shouldSort && !this.state.isSorting) {
             this.setState({ isSorting: true });
             switch(this.state.sortType){
                 case "merge":
-                    this.MergeSort(getMergeSortAnimations(array));
+                    this.MergeSort(getMergeSortAnimations(array), arrayBars);
                     break;
                 case "insertion":
-                    this.InsertionSort(getInsertionSortAnimations(array));
+                    this.InsertionSort(getInsertionSortAnimations(array), arrayBars);
                     break;
                 case "quick":
-                    this.QuickSort(getQuickSortAnimations(array));
+                    this.QuickSort(getQuickSortAnimations(array), arrayBars);
                     break;
                 case "bubble":
-                    this.BubbleSort(getBubbleSortAnimations(array));
+                    this.BubbleSort(getBubbleSortAnimations(array), arrayBars);
                     break;
                 case "heap":
-                    this.HeapSort(getHeapSortAnimations(array));
+                    this.HeapSort(getHeapSortAnimations(array), arrayBars);
                     break;
                 default:
                     break;
@@ -74,9 +75,16 @@ export default class Array extends React.Component {
             sortType: e.target.value,
         })
     }
-
-    async MergeSort(animations) {
-        let arrayBars = document.getElementsByName(`array${this.props.index}`)
+    async FinishSortingAnimations(arrayBars) {
+        arrayBars.forEach(bar => {
+            bar.style.backgroundColor = successColour;
+        });
+        await wait(1000);
+        arrayBars.forEach(bar => {
+            bar.style.backgroundColor = primaryColour;
+        });
+    }
+    async MergeSort(animations, arrayBars) {
         let array = this.state.array.slice();
         const length = animations.length;
         for(let i = 0; i < length; i++){
@@ -102,9 +110,10 @@ export default class Array extends React.Component {
           }
           this.setState({array: array});
         }
+        this.FinishSortingAnimations(arrayBars);
     }
-    async InsertionSort(animations) {
-        let arrayBars = document.getElementsByName(`array${this.props.index}`)
+
+    async InsertionSort(animations, arrayBars) {
         let array = this.state.array.slice();
         const length = animations.length;
         for(let i = 0; i < length; i++){
@@ -133,9 +142,9 @@ export default class Array extends React.Component {
           }
           this.setState({array: array});
         }
+        this.FinishSortingAnimations(arrayBars);
     }
-    async QuickSort(animations) {
-        let arrayBars = document.getElementsByName(`array${this.props.index}`)
+    async QuickSort(animations, arrayBars) {
         let array = this.state.array.slice();
         const length = animations.length;
         let tempPivotIndex = 0;
@@ -179,9 +188,9 @@ export default class Array extends React.Component {
           }
           this.setState({ array: array });
         }
+        this.FinishSortingAnimations(arrayBars);
     }
-    async BubbleSort(animations) {
-        let arrayBars = document.getElementsByName(`array${this.props.index}`)
+    async BubbleSort(animations, arrayBars) {
         let array = this.state.array.slice();
         const length = animations.length;
         for(let i = 0; i < length; i++){
@@ -215,9 +224,9 @@ export default class Array extends React.Component {
             }
             this.setState({ array: array });
         }
+        this.FinishSortingAnimations(arrayBars);
     }
-    async HeapSort(animations) {
-        let arrayBars = document.getElementsByName(`array${this.props.index}`);
+    async HeapSort(animations, arrayBars) {
         let array = this.state.array.slice();
         const length = animations.length;
         for(let i = 0; i < length; i++){
@@ -244,6 +253,7 @@ export default class Array extends React.Component {
           }
           this.setState({ array: array });
         }
+        this.FinishSortingAnimations(arrayBars);
     }
 
     render() {
@@ -272,24 +282,50 @@ export default class Array extends React.Component {
                 }}></div>))}
 
                 <div className="sort-button-container">
-                    <input type="radio" id="merge" value="merge" name={`${this.props.index}`} onClick={(e) => this.handleSortTypeButtons(e)}/>
-                    <label htmlFor="merge">Merge</label>
+                    <input type="radio" className="radio-button" 
+                           id="merge" 
+                           value="merge"
+                           checked={this.state.sortType === "merge"} 
+                           name={`${this.props.index}`} 
+                           onChange={this.handleSortTypeButtons}/>
+                    <label htmlFor="merge" className="radio-label">Merge</label>
 
-                    <input type="radio" id="insertion" value="insertion" name={`${this.props.index}`} onClick={(e) => this.handleSortTypeButtons(e)}/>
-                    <label htmlFor="insertion">Insertion</label>
+                    <input type="radio" 
+                           className="radio-button"
+                           id="insertion" 
+                           value="insertion" 
+                           checked={this.state.sortType === "insertion"} 
+                           name={`${this.props.index}`} 
+                           onChange={this.handleSortTypeButtons}/>
+                    <label htmlFor="insertion" className="radio-label">Insertion</label>
 
-                    <input type="radio" id="quick" value="quick" name={`${this.props.index}`} onClick={(e) => this.handleSortTypeButtons(e)}/>
-                    <label htmlFor="quick">Quick</label>
+                    <input type="radio" className="radio-button"
+                           id="quick" 
+                           value="quick" 
+                           checked={this.state.sortType === "quick"} 
+                           name={`${this.props.index}`} 
+                           onChange={this.handleSortTypeButtons}/>
+                    <label htmlFor="quick" className="radio-label">Quick</label>
 
-                    <input type="radio" id="bubble" value="bubble" name={`${this.props.index}`} onClick={(e) => this.handleSortTypeButtons(e)}/>
-                    <label htmlFor="bubble">Bubble</label>
+                    <input type="radio" className="radio-button"
+                           id="bubble" 
+                           value="bubble" 
+                           checked={this.state.sortType === "bubble"} 
+                           name={`${this.props.index}`} 
+                           onChange={this.handleSortTypeButtons}/>
+                    <label htmlFor="bubble" className="radio-label">Bubble</label>
 
-                    <input type="radio" id="heap" value="heap" name={`${this.props.index}`} onClick={(e) => this.handleSortTypeButtons(e)}/>
-                    <label htmlFor="heap">Heap</label>
+                    <input type="radio" className="radio-button"
+                           id="heap" 
+                           value="heap" 
+                           checked={this.state.sortType === "heap"} 
+                           name={`${this.props.index}`} 
+                           onChange={this.handleSortTypeButtons}/>
+                    <label htmlFor="heap" className="radio-label">Heap</label>
 
                     <label htmlFor="speed" className="slider-label">Speed</label>
                         <input 
-                            className="main-slider"
+                            className="speed-slider"
                             type="range" 
                             id="speed"
                             min="0"
@@ -327,11 +363,11 @@ function ChooseSortType(index) {
     return sortType;
 }
 function compareArrays(array1, array2){
-    if(array1.length != array2.length){
+    if(array1.length !== array2.length){
         return false;
     }
     for(let i = 0; i < array1.length; i++){
-        if(array1[i] != array2[i]){
+        if(array1[i] !== array2[i]){
             return false
         }
     }

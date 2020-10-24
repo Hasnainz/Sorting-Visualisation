@@ -2,7 +2,6 @@ import React from 'react';
 import Sort from './Sort'
 import './Styles/Styles.css';
 
-
 export default class Main extends React.Component {
 
     constructor(props) {
