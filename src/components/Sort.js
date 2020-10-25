@@ -12,14 +12,22 @@ export default class Sort extends React.Component {
             size: size,
             barlength: barlength,
             array: getRandomArray(size, barlength),
+            speed: 0,
             arraycount: 3,
         }
         this.handleSizeSlider = this.handleSizeSlider.bind(this);
+        this.handleSpeedSlider = this.handleSpeedSlider.bind(this);
         this.handleAddArray = this.handleAddArray.bind(this);
         this.handleResetArray = this.handleResetArray.bind(this);
         this.toggleSorting = this.toggleSorting.bind(this);
 
     }
+    handleSpeedSlider(e) {
+        this.setState({
+            speed: 1000 - e.target.value,
+        })
+    }
+
     toggleSorting() {
         this.setState((state) => ({
             isSorting: !state.isSorting,
@@ -66,12 +74,13 @@ export default class Sort extends React.Component {
     render() {
         return(
             <div>
-                <div className="array-container">
+                <div>
                     <ArrayContainer
                         arraycount={this.state.arraycount} 
                         array={this.state.array}
                         maxheight={this.state.barlength}
-                        isSorting={this.state.isSorting}/>
+                        isSorting={this.state.isSorting}
+                        speed={this.state.speed}/>
                 </div>
 
                 <div className="button-container">
@@ -96,15 +105,25 @@ export default class Sort extends React.Component {
                </div>
                
                <div className="slider-container">
-                <label className="size-slider-label">
-                        <input className="size-slider"
+                    <label className="slider-label">
+                        <input className="slider"
+                            type="range" 
+                            id="speed"
+                            min="0"
+                            max="1000"
+                            value={1000 - this.state.speed}
+                            onChange={(e) => this.handleSpeedSlider(e)}/>
+                        Speed
+                    </label>
+                    <label className="slider-label">
+                        <input className="slider"
                             type="range" 
                             id="size" 
                             min="4"
                             max={calculateMaxArraySize(window.innerWidth)}
                             value={this.state.size}
                             onChange={this.handleSizeSlider}/>
-                        Size
+                        &nbsp;Size
                     </label>
                 </div>
 

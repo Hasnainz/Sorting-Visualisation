@@ -12,13 +12,14 @@ export default class ArrayContainer extends React.Component {
             <Array array={this.props.array}
                    maxheight={this.props.maxheight} 
                    index={i}
-                   shouldSort={this.props.isSorting}/>
+                   shouldSort={this.props.isSorting}
+                   speed={this.props.speed}/>
             );
         }
         return(
             ArrayS.map((arr, index) => (
-            <div className="array" 
-                key={index}>
+            <div className="array-container"
+                 key={index}>
                 {arr}
             </div>
             )))

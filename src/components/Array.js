@@ -21,16 +21,8 @@ export default class Array extends React.Component {
             array: this.props.array,
             isSorting: false,
             sortType: defaultSortType,
-            speed: 0,
         }
-        this.handleSpeedSlider = this.handleSpeedSlider.bind(this);
         this.handleSortTypeButtons = this.handleSortTypeButtons.bind(this);
-    }
-
-    handleSpeedSlider(e) {
-        this.setState({
-            speed: 1000 - e.target.value,
-        })
     }
 
     ManageSorting() {
@@ -68,13 +60,14 @@ export default class Array extends React.Component {
             this.setState({ isSorting: false });
             return;
         }
-
     }
+
     handleSortTypeButtons(e) {
         this.setState({
             sortType: e.target.value,
         })
     }
+
     async FinishSortingAnimations(arrayBars) {
         arrayBars.forEach(bar => {
             bar.style.backgroundColor = successColour;
@@ -97,11 +90,11 @@ export default class Array extends React.Component {
             let barTwoStyle = arrayBars[barTwoIndex].style;
             barOneStyle.backgroundColor = selectedColour;
             barTwoStyle.backgroundColor = selectedColour;
-            await wait(this.state.speed);
+            await wait(this.props.speed);
 
             barTwoStyle.height = `${barHeight}px`;
             array[barTwoIndex] = barHeight;
-            await wait(this.state.speed);
+            await wait(this.props.speed);
             barOneStyle.backgroundColor = primaryColour;
             barTwoStyle.backgroundColor = primaryColour;
           }
@@ -126,7 +119,7 @@ export default class Array extends React.Component {
               arrayBars[barOneIndex+1].style.height = `${barOneHeight}px`;
               array[barOneIndex+1] = barOneHeight;
 
-              await wait(this.state.speed);
+              await wait(this.props.speed);
               arrayBars[barOneIndex].style.backgroundColor = primaryColour;
               arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
             }
@@ -134,7 +127,7 @@ export default class Array extends React.Component {
               let [barOneIndex, keyHeight] = animations[i];
               arrayBars[barOneIndex].style.height = `${keyHeight}px`;
               array[barOneIndex] = keyHeight;
-              await wait(this.state.speed);
+              await wait(this.props.speed);
             }
           }
           else{
@@ -161,7 +154,7 @@ export default class Array extends React.Component {
 
               arrayBars[barOneIndex].style.backgroundColor = successColour;
               arrayBars[barTwoIndex].style.backgroundColor = successColour;
-              await wait(this.state.speed);
+              await wait(this.props.speed);
               arrayBars[barOneIndex].style.backgroundColor = primaryColour;
               arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
             }
@@ -173,12 +166,12 @@ export default class Array extends React.Component {
               let [pivotIndex] = animations[i];
               arrayBars[pivotIndex].style.backgroundColor = pivotColour;
               tempPivotIndex = pivotIndex;
-              await wait(this.state.speed);
+              await wait(this.props.speed);
             }
             else{
               let [barOneIndex] = animations[i];
               arrayBars[barOneIndex].style.backgroundColor = selectedColour;
-              await wait(this.state.speed);
+              await wait(this.props.speed);
               arrayBars[barOneIndex].style.backgroundColor = primaryColour;
             }  
           }
@@ -200,7 +193,7 @@ export default class Array extends React.Component {
                 let barTwoStyle = arrayBars[barTwoIndex].style;
                 barOneStyle.backgroundColor = selectedColour;
                 barTwoStyle.backgroundColor = selectedColour;
-                await wait(this.state.speed);
+                await wait(this.props.speed);
 
                 if(parseInt(barOneHeight) > parseInt(barTwoHeight)){
                     barOneStyle.height = `${barTwoHeight}px`;
@@ -215,7 +208,7 @@ export default class Array extends React.Component {
                     barOneStyle.backgroundColor = failedColour;
                     barTwoStyle.backgroundColor = failedColour;
                 }
-                await wait(this.state.speed);
+                await wait(this.props.speed);
                 barOneStyle.backgroundColor = primaryColour;
                 barTwoStyle.backgroundColor = primaryColour;
             }
@@ -234,7 +227,7 @@ export default class Array extends React.Component {
             let [barOneIndex, barTwoIndex, barOneHeight, barTwoHeight] = animations[i];   
             arrayBars[barOneIndex].style.backgroundColor = selectedColour;
             arrayBars[barTwoIndex].style.backgroundColor = selectedColour;
-            await wait(this.state.speed);
+            await wait(this.props.speed);
 
             arrayBars[barOneIndex].style.height = `${barTwoHeight}px`;  
             array[barOneIndex] = barTwoHeight;
@@ -244,7 +237,7 @@ export default class Array extends React.Component {
             
             arrayBars[barOneIndex].style.backgroundColor = successColour;
             arrayBars[barTwoIndex].style.backgroundColor = successColour;
-            await wait(this.state.speed);
+            await wait(this.props.speed);
             arrayBars[barOneIndex].style.backgroundColor = primaryColour;
             arrayBars[barTwoIndex].style.backgroundColor = primaryColour;
           }
@@ -262,7 +255,7 @@ export default class Array extends React.Component {
         const pixelwidth = calculatePixelWidth(window.innerWidth,array.length);
         this.ManageSorting();
         return(
-            <div>
+            <div className="array">
                 <div className="transparent-array-bar"
                      style={{
                          height: `${maxheight}px`,
@@ -283,66 +276,59 @@ export default class Array extends React.Component {
 
                 <div className="sort-button-container">
                     <label className="radio-label">
-                        <input type="radio" className="radio-button" 
+                        <input type="radio" 
                             id="merge" 
                             value="merge"
                             checked={this.state.sortType === "merge"} 
                             name={`${this.props.index}`} 
                             onChange={this.handleSortTypeButtons}/>
-                        Merge
+                        <span className="checkmark"></span>Merge
                     </label>
                     <label className="radio-label">
-                        <input type="radio" 
-                            className="radio-button"
+                        <input type="radio" className="radio-button"
                             id="insertion" 
                             value="insertion" 
                             checked={this.state.sortType === "insertion"} 
                             name={`${this.props.index}`} 
                             onChange={this.handleSortTypeButtons}/>
-                        Insertion
+                        <span className="checkmark"></span>Insertion
                     </label>
                     
                     <label className="radio-label">
-                    <input type="radio" className="radio-button"
-                           id="quick" 
-                           value="quick" 
-                           checked={this.state.sortType === "quick"} 
-                           name={`${this.props.index}`} 
-                           onChange={this.handleSortTypeButtons}/>
-                        Quick
+                        <input type="radio" 
+                            id="quick" 
+                            value="quick" 
+                            checked={this.state.sortType === "quick"} 
+                            name={`${this.props.index}`} 
+                            onChange={this.handleSortTypeButtons}/>
+                        <span className="checkmark"></span>Quick
                     </label>
 
                     <label className="radio-label">
-                    <input type="radio" className="radio-button"
-                           id="bubble" 
-                           value="bubble" 
-                           checked={this.state.sortType === "bubble"} 
-                           name={`${this.props.index}`} 
-                           onChange={this.handleSortTypeButtons}/>
-                        Bubble
+                        <input type="radio" 
+                            id="bubble" 
+                            value="bubble" 
+                            checked={this.state.sortType === "bubble"} 
+                            name={`${this.props.index}`} 
+                            onChange={this.handleSortTypeButtons}/>
+                        <span className="checkmark"></span>Bubble
                     </label>
 
                     <label className="radio-label">
-                    <input type="radio" className="radio-button"
-                           id="heap" 
-                           value="heap" 
-                           checked={this.state.sortType === "heap"} 
-                           name={`${this.props.index}`} 
-                           onChange={this.handleSortTypeButtons}/>
-                        Heap
+                        <input type="radio" 
+                            id="heap" 
+                            value="heap" 
+                            checked={this.state.sortType === "heap"} 
+                            name={`${this.props.index}`} 
+                            onChange={this.handleSortTypeButtons}/>
+                        <span className="checkmark"></span>Heap
                     </label>
-
-                    <label className="slider-label">
-                        <input className="speed-slider"
-                            type="range" 
-                            id="speed"
-                            min="0"
-                            max="1000"
-                            value={1000 - this.state.speed}
-                            onChange={(e) => this.handleSpeedSlider(e)}/>
-                        Speed
+                    <label className="radio-label">
+                        Timer : 00:00:00
                     </label>
-                   
+                    <label className="radio-label">
+                        Comparisons : 1000
+                    </label>
                 </div>
             </div>
             
