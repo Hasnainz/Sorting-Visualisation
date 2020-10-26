@@ -1,5 +1,6 @@
 import React from "react";
 import './Styles/Styles.css';
+import Timer from './Timer';
 import getBubbleSortAnimations from './Algorithms/bubblesort';
 import getHeapSortAnimations from './Algorithms/heapsort';
 import getQuickSortAnimations from './Algorithms/quicksort';
@@ -20,8 +21,11 @@ export default class Array extends React.Component {
             OGarray: this.props.array,
             array: this.props.array,
             isSorting: false,
+            timerOn: false,
+            reset: false,
             sortType: defaultSortType,
         }
+
         this.handleSortTypeButtons = this.handleSortTypeButtons.bind(this);
     }
 
@@ -30,12 +34,13 @@ export default class Array extends React.Component {
             this.setState({
                 OGarray: this.props.array,
                 array: this.props.array,
+                reset: true,
             })
         }
         const array = this.state.array.slice();
         let arrayBars = document.getElementsByName(`array${this.props.index}`)
         if(this.props.shouldSort && !this.state.isSorting) {
-            this.setState({ isSorting: true });
+            this.setState({ isSorting: true, timerOn: true, reset: false});
             switch(this.state.sortType){
                 case "merge":
                     this.MergeSort(getMergeSortAnimations(array), arrayBars);
@@ -57,7 +62,7 @@ export default class Array extends React.Component {
             }
         }
         else if(!this.props.shouldSort && this.state.isSorting) {
-            this.setState({ isSorting: false });
+            this.setState({ isSorting: false, timerOn: false});
             return;
         }
     }
@@ -68,7 +73,8 @@ export default class Array extends React.Component {
         })
     }
 
-    async FinishSortingAnimations(arrayBars) {
+    async FinishSorting(arrayBars) {
+        this.setState({ timerOn: false });
         arrayBars.forEach(bar => {
             bar.style.backgroundColor = successColour;
         });
@@ -103,7 +109,7 @@ export default class Array extends React.Component {
           }
           this.setState({array: array});
         }
-        this.FinishSortingAnimations(arrayBars);
+        this.FinishSorting(arrayBars);
     }
 
     async InsertionSort(animations, arrayBars) {
@@ -135,7 +141,7 @@ export default class Array extends React.Component {
           }
           this.setState({array: array});
         }
-        this.FinishSortingAnimations(arrayBars);
+        this.FinishSorting(arrayBars);
     }
     async QuickSort(animations, arrayBars) {
         let array = this.state.array.slice();
@@ -181,7 +187,7 @@ export default class Array extends React.Component {
           }
           this.setState({ array: array });
         }
-        this.FinishSortingAnimations(arrayBars);
+        this.FinishSorting(arrayBars);
     }
     async BubbleSort(animations, arrayBars) {
         let array = this.state.array.slice();
@@ -217,7 +223,7 @@ export default class Array extends React.Component {
             }
             this.setState({ array: array });
         }
-        this.FinishSortingAnimations(arrayBars);
+        this.FinishSorting(arrayBars);
     }
     async HeapSort(animations, arrayBars) {
         let array = this.state.array.slice();
@@ -246,7 +252,7 @@ export default class Array extends React.Component {
           }
           this.setState({ array: array });
         }
-        this.FinishSortingAnimations(arrayBars);
+        this.FinishSorting(arrayBars);
     }
 
     render() {
@@ -323,11 +329,9 @@ export default class Array extends React.Component {
                             onChange={this.handleSortTypeButtons}/>
                         <span className="checkmark"></span>Heap
                     </label>
+                    <Timer isSorting={this.state.timerOn} doReset={this.state.reset}/>
                     <label className="radio-label">
-                        Timer : 00:00:00
-                    </label>
-                    <label className="radio-label">
-                        Comparisons : 1000
+                        Comparisons : {this.state.comparisons}
                     </label>
                 </div>
             </div>
