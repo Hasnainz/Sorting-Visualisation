@@ -15,6 +15,7 @@ export default function getBubbleSortAnimations(array){
         //sending this information to the animation array so that the program can do the same calculation below.
         animations.push([j-1, j, a, b]);
             if (a > b) {
+              //swapping the values if the left pillar is smaller than the right pillar 
               array[j-1] = b;
               array[j] = a;
               swapped = j;
