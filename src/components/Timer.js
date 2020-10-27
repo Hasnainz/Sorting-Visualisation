@@ -1,29 +1,24 @@
 import React, { useState, useEffect } from 'react';
 
 function Timer(props) {
-    const [milliseconds, setMilliseconds] = useState(0);
+    const [elapsed, setElapsed] = useState(0);
 
     useEffect(() => {
         let interval = null;
-        if (props.doReset){
-            setMilliseconds(0);
-        }
         if (props.isSorting) {
         interval = setInterval(() => {
-            setMilliseconds(milliseconds => milliseconds + 1);
-        }, 1);
+            setElapsed(Date.now() - props.start);
+        }, 10);
 
-        } else if (!props.isSorting && milliseconds !== 0) {
-        clearInterval(interval);
+        } else if (!props.isSorting) {
+            clearInterval(interval);
         }
         return () => clearInterval(interval);
-    }, [props.isSorting, props.doReset, milliseconds]);
-
-
+    }, [props.isSorting, props.doReset, props.start]);
 
     return (
         <label className="radio-label">
-            Timer : {milliseconds}ms
+            Timer : {Math.floor(elapsed)}ms
         </label>
     )
 }
