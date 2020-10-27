@@ -40,7 +40,7 @@ export default class Array extends React.Component {
         const array = this.state.array.slice();
         let arrayBars = document.getElementsByName(`array${this.props.index}`)
         if(this.props.shouldSort && !this.state.isSorting) {
-            this.setState({ isSorting: true, timerOn: true, start: Date.now()});
+            this.setState({ isSorting: true, timerOn: true, start: Date.now(), comparisons: 0});
             switch(this.state.sortType){
                 case "merge":
                     this.MergeSort(getMergeSortAnimations(array), arrayBars);
@@ -88,7 +88,6 @@ export default class Array extends React.Component {
     }
     async MergeSort(animations, arrayBars) {
         let array = this.state.array.slice();
-        let comparisons = this.state.comparisons;
         const length = animations.length;
         for(let i = 0; i < length; i++){
           if(this.props.shouldSort){
@@ -111,15 +110,13 @@ export default class Array extends React.Component {
           else{
             return;
           }
-          comparisons++;
-          this.setState({array: array, comparisons: comparisons});
+          this.setState((state) => ({array: array, comparisons: state.comparisons++}));
         }
         this.FinishSorting(arrayBars);
     }
 
     async InsertionSort(animations, arrayBars) {
         let array = this.state.array.slice();
-        let comparisons = this.state.comparisons;
         const length = animations.length;
         for(let i = 0; i < length; i++){
           if(this.props.shouldSort){
@@ -145,14 +142,12 @@ export default class Array extends React.Component {
           else{
             return;
           }
-          comparisons++;
-          this.setState({array: array, comparisons: comparisons});
+          this.setState((state) => ({array: array, comparisons: state.comparisons++}));
         }
         this.FinishSorting(arrayBars);
     }
     async QuickSort(animations, arrayBars) {
         let array = this.state.array.slice();
-        let comparisons = this.state.comparisons;
         const length = animations.length;
         let tempPivotIndex = 0;
         for(let i = 0; i < length; i++){
@@ -193,14 +188,12 @@ export default class Array extends React.Component {
             arrayBars[tempPivotIndex].style.backgroundColor = primaryColour;
             return;
           }
-          comparisons++;
-          this.setState({array: array, comparisons: comparisons});
+          this.setState((state) => ({array: array, comparisons: state.comparisons++}));
         }
         this.FinishSorting(arrayBars);
     }
     async BubbleSort(animations, arrayBars) {
         let array = this.state.array.slice();
-        let comparisons = this.state.comparisons;
         const length = animations.length;
         for(let i = 0; i < length; i++){
             if(this.props.shouldSort){
@@ -231,14 +224,12 @@ export default class Array extends React.Component {
             else{
                 return;
             }
-            comparisons++;
-            this.setState({array: array, comparisons: comparisons});
+            this.setState((state) => ({array: array, comparisons: state.comparisons++}));
         }
         this.FinishSorting(arrayBars);
     }
     async HeapSort(animations, arrayBars) {
         let array = this.state.array.slice();
-        let comparisons = this.state.comparisons;
         const length = animations.length;
         for(let i = 0; i < length; i++){
           if(this.props.shouldSort){
@@ -262,8 +253,7 @@ export default class Array extends React.Component {
           else{
             return;
           }
-          comparisons++;
-          this.setState({array: array, comparisons: comparisons});
+          this.setState((state) => ({array: array, comparisons: state.comparisons++}));
         }
         this.FinishSorting(arrayBars);
     }
