@@ -3,10 +3,13 @@ import ArrayContainer from './ArrayContainer';
 import './Styles/Styles.css';
 
 export default class Sort extends React.Component {
+    
     constructor(props){
+        //The size and maximum bar length are calculated based on the window height and length.
         super(props);
         const size = calculateMaxArraySize(window.innerWidth);
         const barlength = calculateBarLength(window.innerHeight, 3)
+        //This component mangages the following values and will rerender the necessary children components when these are updated.
         this.state = {
             isSorting: false,
             size: size,
@@ -15,25 +18,38 @@ export default class Sort extends React.Component {
             speed: 0,
             arraycount: 3,
         }
+        //Binding the button click events to local functions.
         this.handleSizeSlider = this.handleSizeSlider.bind(this);
         this.handleSpeedSlider = this.handleSpeedSlider.bind(this);
         this.handleAddArray = this.handleAddArray.bind(this);
         this.handleResetArray = this.handleResetArray.bind(this);
         this.toggleSorting = this.toggleSorting.bind(this);
-
     }
+    //Recalculates the height whenever the component is updated
+    // componentDidUpdate() {
+    //     const size = calculateMaxArraySize(window.innerWidth);
+    //     const barlength = calculateBarLength(window.innerHeight, 3)
+    //     this.setState({
+    //         size: size,
+    //         barlength: barlength,
+    //     })
+    // }
+
     handleSpeedSlider(e) {
+        //Changes the speed at which animations occur.
         this.setState({
             speed: 1000 - e.target.value,
         })
     }
 
     toggleSorting() {
+        //Toggles the sorting button from being on or off.
         this.setState((state) => ({
             isSorting: !state.isSorting,
         }));
     }
     handleSizeSlider(event) {
+        //Changes the size of the array, also stops sorting.
         const size = event.target.value;
         this.setState((state) => ({
             isSorting: false,
@@ -43,6 +59,7 @@ export default class Sort extends React.Component {
     }
 
     handleResetArray() {
+        //When the reset button is clicked, sorting is stoped and a new array is generated.
         const arr = getRandomArray(this.state.size, this.state.barlength)
         this.setState({
             isSorting: false,
@@ -52,6 +69,7 @@ export default class Sort extends React.Component {
 
    
     handleAddArray(e) {
+        //This sets bounds for the minimum and maximum amount of arrays that can be on the screen.
         let arraycount = this.state.arraycount;
         if(arraycount < 5 && e.target.value === "+") {
             arraycount++;
@@ -62,6 +80,7 @@ export default class Sort extends React.Component {
         else{
             return;
         }
+        //This will recalculate height (since less arrays means that each one can be taller)
         const barlength = calculateBarLength(window.innerHeight, arraycount)
         this.setState({
             isSorting: false,
@@ -75,6 +94,7 @@ export default class Sort extends React.Component {
         return(
             <div>
                 <div>
+                    {/* Sets the props of the array container */}
                     <ArrayContainer
                         arraycount={this.state.arraycount} 
                         array={this.state.array}
@@ -82,7 +102,7 @@ export default class Sort extends React.Component {
                         isSorting={this.state.isSorting}
                         speed={this.state.speed}/>
                 </div>
-
+                {/* The buttons and their event handlers */}
                 <div className="button-container">
                     <button className="medium-button" 
                             value="-" 
@@ -98,8 +118,10 @@ export default class Sort extends React.Component {
                     <button onClick={this.toggleSorting} 
                             className="main-button"
                             style={{
+                                /* Changes the colour of the button depending on whether or not it is sorting */
                                 backgroundColor: !this.state.isSorting ? '#3DCBE0' : '#FA5E3F'
                             }}>
+                        {/* Changes the text of the button depending on whether or not it is sorting */}
                         {!this.state.isSorting ? 'Sort' : 'Stop'}
                     </button>
                </div>
@@ -132,10 +154,11 @@ export default class Sort extends React.Component {
         )
     }
 }
+//Calclates how long the vertical bar should be
 function calculateBarLength(WindowHeight, NumberOfArrays) {
     return Math.floor((WindowHeight*0.64)/NumberOfArrays);
 }
-
+//Calculates how large the array size can be in order to not flow off the screen.
 function calculateMaxArraySize(WindowWidth) {
     return Math.floor(WindowWidth * 0.147);
 }
@@ -148,7 +171,7 @@ function getRandomArray(size, maxlength) {
     }
     return array;
 }
-
+//Generates a random number between the two bounds.
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }

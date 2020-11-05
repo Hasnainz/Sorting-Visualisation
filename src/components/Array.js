@@ -110,7 +110,8 @@ export default class Array extends React.Component {
           else{
             return;
           }
-          this.setState((state) => ({array: array, comparisons: state.comparisons++}));
+          
+          this.setState((state) => ({array: array, comparisons: state.comparisons + 1}));
         }
         this.FinishSorting(arrayBars);
     }
@@ -142,7 +143,7 @@ export default class Array extends React.Component {
           else{
             return;
           }
-          this.setState((state) => ({array: array, comparisons: state.comparisons++}));
+          this.setState((state) => ({array: array, comparisons: state.comparisons + 1}));
         }
         this.FinishSorting(arrayBars);
     }
@@ -188,7 +189,7 @@ export default class Array extends React.Component {
             arrayBars[tempPivotIndex].style.backgroundColor = primaryColour;
             return;
           }
-          this.setState((state) => ({array: array, comparisons: state.comparisons++}));
+          this.setState((state) => ({array: array, comparisons: state.comparisons + 1}));
         }
         this.FinishSorting(arrayBars);
     }
@@ -224,7 +225,7 @@ export default class Array extends React.Component {
             else{
                 return;
             }
-            this.setState((state) => ({array: array, comparisons: state.comparisons++}));
+            this.setState((state) => ({array: array, comparisons: state.comparisons + 1}));
         }
         this.FinishSorting(arrayBars);
     }
@@ -253,7 +254,7 @@ export default class Array extends React.Component {
           else{
             return;
           }
-          this.setState((state) => ({array: array, comparisons: state.comparisons++}));
+          this.setState((state) => ({array: array, comparisons: state.comparisons + 1}));
         }
         this.FinishSorting(arrayBars);
     }
