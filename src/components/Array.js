@@ -16,7 +16,9 @@ const pivotColour = "#198494"; //dark blue
 export default class Array extends React.Component {
     constructor(props) {
         super(props);
+        //Gets which sort type will be selected by default based on the size of the array.
         const defaultSortType = ChooseSortType(this.props.index);
+        //Private Attributes
         this.state = {
             OGarray: this.props.array,
             array: this.props.array,
@@ -26,10 +28,11 @@ export default class Array extends React.Component {
             comparisons: 0,
             sortType: defaultSortType,
         }
-
+        //Binds the context of clicking a button to a function.
         this.handleSortTypeButtons = this.handleSortTypeButtons.bind(this);
     }
     componentDidUpdate() {
+        //Checks if the parent array and the current array are different and will update the state.
         if(!compareArrays(this.state.OGarray, this.props.array)){
             this.setState({
                 OGarray: this.props.array,
@@ -37,9 +40,16 @@ export default class Array extends React.Component {
                 start: Date.now(),
             })
         }
+        //Gets and stores a copy of the current array so that the original array is not passed
+        //in by reference. This is expensive but it is needed for control over the visuals of the array.
         const array = this.state.array.slice();
         let arrayBars = document.getElementsByName(`array${this.props.index}`)
+        //If it should be sorting (parent component will tell it)
+        //and if it is not already sorting.
         if(this.props.shouldSort && !this.state.isSorting) {
+            //Then we set sorting to be true, initalise the timer with the current time and set the comparisons to 0;
+            //This is so that time and comparisons are reset whenever sorting is restarted but stays on the screen
+            //indefinately until that point in time.
             this.setState({ isSorting: true, timerOn: true, start: Date.now(), comparisons: 0});
             switch(this.state.sortType){
                 case "merge":
@@ -67,17 +77,18 @@ export default class Array extends React.Component {
         }
     }
 
-
+    //Change the sorting type
     handleSortTypeButtons(e) {
         this.setState({
             sortType: e.target.value,
         })
     }
-
+    //animation once the sorting has finished.
     async FinishSorting(arrayBars) {
         this.setState({ 
             timerOn: false 
         });
+        //llambda function to change each bar colour.
         arrayBars.forEach(bar => {
             bar.style.backgroundColor = successColour;
         });
@@ -86,31 +97,40 @@ export default class Array extends React.Component {
             bar.style.backgroundColor = primaryColour;
         });
     }
+
     async MergeSort(animations, arrayBars) {
         let array = this.state.array.slice();
         const length = animations.length;
         for(let i = 0; i < length; i++){
           if(this.props.shouldSort){
             let [barOneIndex, barTwoIndex, barHeight] = animations[i];
+            //Making sure that the bars are not going off the screen
+            //(once one side has been sorted, it will point to nothing - this stops it)
             if(barOneIndex === this.props.array.length) barOneIndex--;
             if(barTwoIndex === this.props.array.length) barTwoIndex--;
 
+
+            //Changing the colour of the bar.
             let barOneStyle = arrayBars[barOneIndex].style;
             let barTwoStyle = arrayBars[barTwoIndex].style;
             barOneStyle.backgroundColor = selectedColour;
             barTwoStyle.backgroundColor = selectedColour;
             await wait(this.props.speed);
-
+            
+            //Changing the height of the bar.
             barTwoStyle.height = `${barHeight}px`;
             array[barTwoIndex] = barHeight;
             await wait(this.props.speed);
+            //Changing back the colour of the bar.
             barOneStyle.backgroundColor = primaryColour;
             barTwoStyle.backgroundColor = primaryColour;
           }
           else{
             return;
           }
-          
+          //Llambda function that takes the parameter of state so that it can be used
+          //to update the state. Without this, the state may use an old version of state since
+          //it doesn't update immediately.            
           this.setState((state) => ({array: array, comparisons: state.comparisons + 1}));
         }
         this.FinishSorting(arrayBars);
@@ -122,6 +142,7 @@ export default class Array extends React.Component {
         for(let i = 0; i < length; i++){
           if(this.props.shouldSort){
             if(animations[i].length === 3){
+              //Setting the background colour.
               let [barOneIndex, barTwoIndex, barOneHeight] = animations[i];
               arrayBars[barOneIndex].style.backgroundColor = selectedColour;
               arrayBars[barTwoIndex].style.backgroundColor = selectedColour;

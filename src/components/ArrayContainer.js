@@ -3,7 +3,7 @@ import './Styles/Styles.css';
 import Array from './Array';
 
 export default class ArrayContainer extends React.Component {
-   
+   //Holds an array of objects of type Array (poor naming choice since Array is self-defined)
     render() {
         const arraycount = this.props.arraycount;
         let ArrayS = [];
@@ -17,6 +17,7 @@ export default class ArrayContainer extends React.Component {
             );
         }
         return(
+            //Maps arrays to the screen using a llambda function.
             ArrayS.map((arr, index) => (
             <div className="array-container"
                  key={index}>
