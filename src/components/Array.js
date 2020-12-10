@@ -1,5 +1,5 @@
 import React from "react";
-import './Styles/Styles.css';
+import './Styles/styles.css';
 import Timer from './Timer';
 import getBubbleSortAnimations from './Algorithms/bubblesort';
 import getHeapSortAnimations from './Algorithms/heapsort';

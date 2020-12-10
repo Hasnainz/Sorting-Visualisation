@@ -1,6 +1,6 @@
 import React from "react";
 import ArrayContainer from './ArrayContainer';
-import './Styles/Styles.css';
+import './Styles/styles.css';
 
 export default class Sort extends React.Component {
     
@@ -16,7 +16,7 @@ export default class Sort extends React.Component {
             barlength: barlength,
             array: getRandomArray(size, barlength),
             speed: 0,
-            arraycount: 3,
+            arraycount: 2,
         }
         //Binding the button click events to local functions.
         this.handleSizeSlider = this.handleSizeSlider.bind(this);

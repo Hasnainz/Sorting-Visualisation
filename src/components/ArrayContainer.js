@@ -1,5 +1,5 @@
 import React from "react";
-import './Styles/Styles.css';
+import './Styles/styles.css';
 import Array from './Array';
 
 export default class ArrayContainer extends React.Component {

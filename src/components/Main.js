@@ -1,6 +1,6 @@
 import React from 'react';
 import Sort from './Sort'
-import './Styles/Styles.css';
+import './Styles/styles.css';
 
 export default class Main extends React.Component {
 
