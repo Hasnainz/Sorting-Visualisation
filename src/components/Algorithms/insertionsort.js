@@ -21,5 +21,4 @@ function insertionSort(array){
         animations.push([j+1, key])
         array[j + 1] = key;
     }
-    return array;
 };
