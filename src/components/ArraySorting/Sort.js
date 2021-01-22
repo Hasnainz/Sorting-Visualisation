@@ -1,6 +1,6 @@
 import React from "react";
 import ArrayContainer from './ArrayContainer';
-import './Styles/styles.css';
+import './styles.css';
 
 export default class Sort extends React.Component {
     
@@ -116,11 +116,7 @@ export default class Sort extends React.Component {
                          onClick={(e) => this.handleAddArray(e)}>+</button>
 
                     <button onClick={this.toggleSorting} 
-                            className="main-button"
-                            style={{
-                                /* Changes the colour of the button depending on whether or not it is sorting */
-                                backgroundColor: !this.state.isSorting ? '#3DCBE0' : '#FA5E3F'
-                            }}>
+                            className="main-button">
                         {/* Changes the text of the button depending on whether or not it is sorting */}
                         {!this.state.isSorting ? 'Sort' : 'Stop'}
                     </button>

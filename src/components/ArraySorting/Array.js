@@ -1,11 +1,11 @@
 import React from "react";
-import './Styles/styles.css';
+import './styles.css';
 import Timer from './Timer';
-import getBubbleSortAnimations from './Algorithms/bubblesort';
-import getHeapSortAnimations from './Algorithms/heapsort';
-import getQuickSortAnimations from './Algorithms/quicksort';
-import getMergeSortAnimations from './Algorithms/mergesort';
-import getInsertionSortAnimations from './Algorithms/insertionsort';
+import getBubbleSortAnimations from '../Algorithms/bubblesort';
+import getHeapSortAnimations from '../Algorithms/heapsort';
+import getQuickSortAnimations from '../Algorithms/quicksort';
+import getMergeSortAnimations from '../Algorithms/mergesort';
+import getInsertionSortAnimations from '../Algorithms/insertionsort';
 
 const primaryColour = "#3DCBE0"; //blue
 const selectedColour = "#7662F5"; //purple

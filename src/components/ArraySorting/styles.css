@@ -1,0 +1,18 @@
+.array {
+  margin: 1%;
+}
+.array-bar {
+  display: inline-block;
+  margin: 0 2px;
+  background-color: #3dcbe0;
+}
+.transparent-array-bar {
+  display: inline-block;
+}
+.button-container {
+  margin: 1%;
+}
+.radio-label {
+  margin-left: 1%;
+  margin-right: 1%;
+}
